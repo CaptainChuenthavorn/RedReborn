@@ -6,9 +6,17 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1080, 720), "My window");
-  
+
     Menu menu(window.getSize().x,window.getSize().y);
-    
+    sf::Texture texture;
+    if (!texture.loadFromFile("RedBGTheSeries_blue.JPG"))
+    {
+        std::cout << "Load failed" << std::endl;
+        system("pause");
+    }
+    sf::Sprite background;
+    background.setTexture(texture);
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -31,12 +39,10 @@ int main()
                         std::cout << "Play has been pressed" << std::endl;
                         
                         break;
-
                     case 1:
                         std::cout << "Option has been pressed" << std::endl;
                         
                         break;
-
                     case 2:
                         window.close();
                         break;
@@ -51,6 +57,7 @@ int main()
             
         }
         window.clear();
+        window.draw(background);
         menu.draw(window);
         window.display();
     }
