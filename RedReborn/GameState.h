@@ -2,10 +2,10 @@
 #include <memory>
 #include <SFML/Graphics/Sprite.hpp>
 #include "State.hpp"
-class GameState : public Engine::State
+class GameState : public 
 {
 private:
-	std::shared_ptr<Context> m_context;
+	
 
 };
 

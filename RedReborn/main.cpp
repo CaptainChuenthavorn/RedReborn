@@ -29,7 +29,7 @@ int main()
                     switch (menu.GetPressedItem()) {
                     case 0:
                         std::cout << "Play has been pressed" << std::endl;
-                        this->_states->_isAdding
+                        
                         break;
 
                     case 1:
