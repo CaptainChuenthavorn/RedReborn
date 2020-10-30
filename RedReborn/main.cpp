@@ -1,6 +1,8 @@
 #include "SFML/Window.hpp"
 #include <iostream>
 #include "Menu.h"
+#include "State.hpp"
+#include "GameState.h"
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1080, 720), "My window");
@@ -27,20 +29,21 @@ int main()
                     switch (menu.GetPressedItem()) {
                     case 0:
                         std::cout << "Play has been pressed" << std::endl;
+                        this->_states->_isAdding
                         break;
 
                     case 1:
                         std::cout << "Option has been pressed" << std::endl;
+                        
                         break;
 
                     case 2:
-                        std::cout << "Exit has been pressed" << std::endl;
+                        window.close();
                         break;
                     }
                     break;
-                }
-    
-                     break;
+                }  
+                break;
                 case sf::Event::Closed:
                 window.close();
                 break; 
