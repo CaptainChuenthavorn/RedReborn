@@ -34,6 +34,7 @@ Menu::Menu(float width, float height)
 	selectedItemIndex = 0;
 }
 Menu::~Menu()
+
 {
 }
 void Menu::draw(sf::RenderWindow &window) 
