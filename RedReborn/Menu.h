@@ -1,10 +1,10 @@
 #pragma once
-#include"SFML/Graphics.hpp"
-#define MAX_ITEMS 3 //start leaderboard exit
+#include <sfml\Graphics.hpp>
+#define MAX_ITEMS 3 //start leaderbaord exit 
 class Menu
 {
 public:
-	Menu(float width , float height);
+	Menu(float width, float height);
 	~Menu();
 
 	void draw(sf::RenderWindow& window);
