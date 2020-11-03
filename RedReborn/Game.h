@@ -1,27 +1,37 @@
-#pragma once
-#include "Window.h"
-#include "EventManager.h"
-#include "StateManager.h"
-#include "SharedContext.h"
-#include <iostream>
+#pragma once // == ifndef ... GAME_H
+#include "State.h"
+class Game
+{
+private:
+	//Variables
+	sf::RenderWindow* window;//pointer (can use this->)
+	sf::Event sfEvent;
 
-class Game {
+
+	sf::Clock dtClock;
+	float dt; //clock variable to record sf clock && counting time as second with name dt| variable float 
+
+	//Initialization
+	void initWindow();
+
 public:
+
+	//Constructor / destructors
+
 	Game();
 	~Game();
 
-	void Update();
-	void Render();
-	void LateUpdate();
+	//Functions
+	void updateDt();
+	void updateSFMLEvents();
+	void update();
+	void render();
+	void run();
 
-	sf::Time GetElapsed();
 
-	Window* GetWindow();
-private:
-	SharedContext m_context;
-	Window m_window;
-	StateManager m_stateManager;
-	sf::Clock m_clock;
-	sf::Time m_elapsed;
-	void RestartClock();
+
+
+
+
 };
+

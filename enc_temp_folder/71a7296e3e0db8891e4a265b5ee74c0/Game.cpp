@@ -14,7 +14,7 @@ void Game::initWindow()
 
 	std::string title = "none";
 	sf::VideoMode window_bounds(1080,720);
-	unsigned framerate_limit = 120;//variable framerate limit
+	unsigned framerate_limit = 120;
 	bool vertical_sycn_enabled = false;
 	if (ifs.is_open())
 	{
