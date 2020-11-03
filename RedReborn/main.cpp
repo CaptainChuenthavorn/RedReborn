@@ -1,16 +1,13 @@
-﻿#include <sfml\Graphics.hpp>
-#include "window.h"
 #include "Game.h"
-int main()
-{
-	Game game;//create game class valiable
-	while (!game.getWindow()->IsDone())
-	{
-		//game.HandleInput();
+
+void main(int argc, void** argv[]) {
+	// Program entry point.
+	Game game; // Creating our game object.
+	while (!game.GetWindow()->IsDone()) {
+		// Game loop.
+		game.HandleInput();
 		game.Update();
 		game.Render();
+		game.RestartClock();
 	}
-
-	return 0;
 }
-
