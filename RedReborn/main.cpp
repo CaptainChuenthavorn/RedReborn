@@ -2,12 +2,10 @@
 
 void main(int argc, void** argv[]) {
 	// Program entry point.
-	Game game; // Creating our game object.
+	Game game;
 	while (!game.GetWindow()->IsDone()) {
-		// Game loop.
-		game.HandleInput();
 		game.Update();
 		game.Render();
-		game.RestartClock();
+		game.LateUpdate();
 	}
 }

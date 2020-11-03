@@ -1,27 +1,27 @@
 #pragma once
 #include "Window.h"
+#include "EventManager.h"
+#include "StateManager.h"
+#include "SharedContext.h"
+#include <iostream>
 
 class Game {
 public:
 	Game();
 	~Game();
 
-	void HandleInput();
 	void Update();
 	void Render();
-
-	Window* GetWindow();
+	void LateUpdate();
 
 	sf::Time GetElapsed();
-	void RestartClock();
-private:
-	void MoveMushroom();
 
+	Window* GetWindow();
+private:
+	SharedContext m_context;
 	Window m_window;
+	StateManager m_stateManager;
 	sf::Clock m_clock;
 	sf::Time m_elapsed;
-
-	sf::Texture m_mushroomTexture;
-	sf::Sprite m_mushroom;
-	sf::Vector2i m_increment;
+	void RestartClock();
 };
