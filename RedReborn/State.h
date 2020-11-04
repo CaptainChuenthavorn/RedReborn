@@ -8,17 +8,26 @@
 #include <sfml\Window.hpp>
 #include <sfml\Graphics.hpp>
 #include <sfml\Audio.hpp>
+#include <stack>
+#include <map>
+#include <vector>
 class State
 {
 private:
+	sf::RenderWindow* window;
 	std::vector<sf::Texture> textures;
-
+	bool quit;
 
 public:
-	State();
+	State(sf::RenderWindow* window);
 	~State();
 
-	virtual void update()=0;
-	virtual void render()=0;
+	const bool& getQuit() const;
+	virtual void checkForQuit(); 
+
+	virtual void updateKeyblinds(const float & dt)=0;
+	virtual void endState() = 0;
+	virtual void update(const float& dt)=0;
+	virtual void render(sf::RenderTarget* target = nullptr)=0;
 };
 

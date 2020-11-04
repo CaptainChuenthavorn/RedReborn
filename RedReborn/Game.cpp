@@ -35,15 +35,27 @@ void Game::initWindow()
 	this->window->setVerticalSyncEnabled(vertical_sycn_enabled);
 }
 
+void Game::initStates()
+{
+	this->states.push(new GameState(this->window)); //first state will be GameState 
+}
+
 Game::Game()
 {
 	/*when call Game in main will run initWindow automatically*/
 	this->initWindow();
+	this->initStates();
 }
 
 Game::~Game()
 {
 	delete this->window;
+
+	while (!this->states.empty())
+	{
+		delete this->states.top();
+		this->states.pop();
+	}
 }
 
 void Game::updateDt()
@@ -70,12 +82,23 @@ void Game::updateSFMLEvents()
 void Game::update()
 {
 	this->updateSFMLEvents();
+	
+	if (!this->states.empty())
+	{
+		this->states.top()->update(this->dt);
 
-	int sum = 0;
-	for (size_t i = 0;i < 10000000;i++)/*note that if method in game have a lot you dtClock will slowly (lag) if less method it will smoothly not lag*/
+		if (this->states.top()->getQuit())
+		{
+			this->states.top()->endState();
+			delete this->states.top();
+			this->states.pop();
+		}
+	}
+	/*int sum = 0;
+	for (size_t i = 0;i < 10000000;i++)//note that if method in game have a lot you dtClock will slowly (lag) if less method it will smoothly not lag
 	{
 		sum += i;
-	}
+	}*/
 }
 
 void Game::render()
@@ -83,7 +106,10 @@ void Game::render()
 	this->window->clear();
 	
 	//render items
+	if (!this->states.empty())
+		this->states.top()->render(this->window);
 	this->window->display();
+
 }
 
 void Game::run()
