@@ -1,73 +1,56 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <stdio.h>
-
+#include "TileMap.cpp"
 int main()
 {
+  
+    // create the window
+    sf::RenderWindow window(sf::VideoMode(512, 256), "Tilemap");
+    sf::View first(sf::FloatRect(500, 500, 1000, 1000));
+    sf::View second(sf::Vector2f(250, 250), sf::Vector2f(800, 600));
+    sf::View view(sf::FloatRect(0, 0, 800, 600)); //top-left 0:0 bottom-right 800:600
+    view.setCenter(100, 100);//move center to 100, 100
+    view.move(100, 100);//move by 100x100 offset
+    view.setSize(640, 480);//
+    view.zoom(0.5f);//smaller view space
+    window.setView(view);//applies view to window
 
-	
 
-/*
+    // define the level with an array of tile indices
+    const int level[] =
+    {
+        0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+        0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+        0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+        0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+        2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+        0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+    };
 
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "Red Reborn", sf::Style::Close | sf::Style::Resize);
+    // create the tilemap from the level definition
+    TileMap map;
+    if (!map.load("Tileset.png", sf::Vector2u(32, 32), level, 16, 8))
+        return -1;
 
-	sf::Clock cl;
-	float times;
+    // run the main loop
+    while (window.isOpen())
+    {
+        // handle events
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
 
-	sf::Texture playerTexture;
-	if (!playerTexture.loadFromFile("asset/PlayerSheet.png"))
-	{
-		//Handle error
-	}
-	int ShapeX = 96;
-	int ShapeY = 96;
+        // draw the map
+        window.clear();
+        window.draw(map);
+        window.display();
+    }
 
-	sf::Sprite player;
-	player.setTexture(playerTexture);
-	player.setTextureRect(sf::IntRect(0, 0, ShapeX, ShapeY));
-
-	int animationFrame = 0; //Frame of animate
-	while (window.isOpen())
-	{
-		window.draw(player);
-		window.display();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			player.move(-0.1f, 0.0f);
-			player.setTextureRect(sf::IntRect(ShapeX * animationFrame, ShapeY * 1, ShapeX, ShapeY));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			player.move(0.1f, 0.0f);
-			player.setTextureRect(sf::IntRect(ShapeX * animationFrame, ShapeY * 0, ShapeX, ShapeY));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			player.move(0.0f, -0.1f);
-			player.setTextureRect(sf::IntRect(ShapeX * animationFrame, ShapeY * 5, ShapeX, ShapeY));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			player.move(0.0f, 0.1f);
-			player.setTextureRect(sf::IntRect(ShapeX * animationFrame, ShapeY * 5, ShapeX, ShapeY));
-		}
-		/*sf::Event event;
-		while (window.pollEvent(event))
-		{
-				if (event.type == sf::Event::Closed)
-					window.close();
-			}
-
-		animationFrame++;
-		if (animationFrame >= 7)
-		{
-			animationFrame = 0;
-		}
-			window.clear();
-			
-			
-
-		}
-
-	return 0;
-}*/
+    return 0;
+}
