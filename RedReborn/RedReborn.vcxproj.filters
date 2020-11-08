@@ -15,11 +15,82 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\EventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\BaseState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\SharedContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Intro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_MainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Paused.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\StateManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TileMap.cpp">
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Intro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Paused.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\StateManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\intro.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Mushroom.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\keys.cfg">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\arial.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>
