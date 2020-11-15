@@ -15,63 +15,69 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\EventManager.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\BaseState.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Game.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Game.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\animationEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\SharedContext.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Intro.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_MainMenu.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\hitbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Paused.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\Platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\StateManager.h">
+    <ClInclude Include="..\..\RedJourney\RedJourney\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Window.h">
+    <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Game.cpp">
+    <ClCompile Include="animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Intro.cpp">
+    <ClCompile Include="animationEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_MainMenu.cpp">
+    <ClCompile Include="Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Paused.cpp">
+    <ClCompile Include="Bullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\StateManager.cpp">
+    <ClCompile Include="Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Window.cpp">
+    <ClCompile Include="enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hitbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

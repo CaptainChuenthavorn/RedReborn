@@ -22,27 +22,29 @@
     <Font Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\arial.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\BaseState.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\EventManager.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Game.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\SharedContext.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\StateManager.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Game.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Intro.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_MainMenu.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Paused.h" />
-    <ClInclude Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Window.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\animation.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\animationEnemy.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\Background.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\Bullet.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\Collider.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\enemy.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\hitbox.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\Platform.h" />
+    <ClInclude Include="..\..\RedJourney\RedJourney\Player.h" />
+    <ClInclude Include="Item.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\EventManager.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Game.cpp" />
     <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Main.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\StateManager.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Game.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Intro.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_MainMenu.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\State_Paused.cpp" />
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Window.cpp" />
+    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="animationEnemy.cpp" />
+    <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="hitbox.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\intro.png" />
