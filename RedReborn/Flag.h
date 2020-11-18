@@ -2,10 +2,10 @@
 #include <sfml/Graphics.hpp>
 #include "Collider.h"
 
-class Item
+class Flag
 {
 public:
-	Item(sf::Texture* texture, sf::Vector2f position, sf::Vector2f velocity);
+	Flag(sf::Texture* texture, sf::Vector2f position, sf::Vector2f velocity);
 	void Update(float deltaTime);
 	void Draw(sf::RenderWindow& window);
 	void SetPosition(sf::Vector2f(position)) { body.setPosition(position); }

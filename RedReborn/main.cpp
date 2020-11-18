@@ -2,13 +2,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
-//#include "C:\RedReborn\RedReborn\animation.h"
-//#include "C:\RedReborn\RedReborn\Player.h"
-//#include "C:\RedReborn\RedReborn\Platform.h"
-//#include "C:\RedReborn\RedReborn\enemy.h"
-//#include "C:\RedReborn\RedReborn\hitbox.h"
-//#include "C:\RedReborn\RedReborn\Bullet.h"
-//#include "C:\RedReborn\RedReborn\Item.h"
 //#include "C:\RedReborn\RedReborn\Background.h"
 #include "animation.h"
 #include "Platform.h"
@@ -18,8 +11,7 @@
 #include "hitbox.h"
 #include "Item.h"
 #include "Background.h"
-
-
+#include "Bitmap.h"
 
 static const float VIEW_HEIGHT = 720.0f;
 static const float VIEW_WIDTH = 1080.0f;
@@ -29,7 +21,9 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view) {
 }
 
 int main()
-{
+{	
+	/////////////////////////Render window ////////////////
+	sf::RenderWindow window(sf::VideoMode(1080, 720), "Red Adventure", sf::Style::Close | sf::Style::Resize);
 	///////////////////////////////////////Item/////////////////////////////////
 	/********************************** Chest ********************************/
 	std::vector<Item> chest;
@@ -39,7 +33,7 @@ int main()
 
 	}
 	sf::Clock chestTime;
-	float chestT = 0.0f; //เป็นตัวเก็บค่า เวลาของ bullet
+	float chestT = 0.0f; //?????????????? ??????? bullet
 	sf::Clock spawnItem;
 	float spawnItemf = 0.0f;
 
@@ -83,20 +77,23 @@ int main()
 	std::vector<Item> hpPotion;
 	sf::Texture hpPotionTexture;
 	if (!hpPotionTexture.loadFromFile("asset/object/PotionRed.png"));
-	sf::Clock hpPotionTime;
-	float potionT = 0.0f; //เป็นตัวเก็บค่า เวลาของ bullet
-	/*sf::Clock spawnItem;
-	float spawnItemf = 0.0f;
+	//sf::Clock hpPotionTime;
+	//float potionT = 0.0f; //?????????????? ??????? bullet
+	//
+	//int potionSpawn=0 ; // 0 = can't create ???????? ,1= ready to create , 2= create ????
+	//
+	sf::Clock Clockspawn;
+	float itemCooldown = 0;
 
-	srand(time(NULL));*/
-	int ranhpPotionX = rand() % 1000;
+	int ranhpPotionX = rand() % 2880;
 	int ranhpPotionY = rand() % 620;
 	float ranhpPotionx = ranhpPotionX / 10.f;
 	float ranhpPotiony = ranhpPotionY / 10.f;
-	
+
 	printf("potion spawn at x: %f y : %f\n", ranhpPotionx, ranhpPotionY);
 	//hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(rand() % 2000 + 1050, rand() % 300 + 310), sf::Vector2f(0, 1)));
-	hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(rand() % 2000 + 1100, rand() % 300 + 305), sf::Vector2f(0, 1)));
+	//hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(rand() % 2000 + 1100, rand() % 300 + 305), sf::Vector2f(0, 1)));
+	hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(ranhpPotionX, ranhpPotionY), sf::Vector2f(0, 1)));
 	/**************************************************************************************/
 	//heartPlayer.setSize(sf::Vector2f(100,100)); 
 	//srand(time(NULL));
@@ -116,8 +113,7 @@ int main()
 	sf::Text staminaText;
 	sf::Text staminaString;
 	sf::RectangleShape staminaBar;
-	////////////////////////////////////////////////
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "Red Adventure", sf::Style::Close | sf::Style::Resize);
+
 	//////////////////////////enemies//////////////////////////
 	sf::Clock spawnTime;
 	float spawnT = 0.0f;
@@ -130,12 +126,22 @@ int main()
 	//////////////////////////////////////bullet declare//////////////////////////
 	std::vector<Bullet> bullet;
 	sf::Texture bullet_texture;
-	if (!bullet_texture.loadFromFile("asset/Adventurer-Bow/Individual Sprites/adventurer-bow-00.png"))
+	if (!bullet_texture.loadFromFile("asset/arrow2.png"))
 	{
 
 	}
 	sf::Clock bullTime;
-	float bull = 0.0f; //เป็นตัวเก็บค่า เวลาของ bullet
+	float bull = 0.0f; //?????????????? ??????? bullet
+
+	int ammo = 5;
+	sf::Text BulletX;
+	sf::Text BulletCount;
+	sf::Sprite ammo1;
+	sf::Texture ammoTexture;
+	if (!ammoTexture.loadFromFile("asset/bullet.png"));
+	ammo1.setScale(0.15f, 0.15f);
+	ammo1.setTexture(ammoTexture);
+
 	//////////////////////////////////////////////////////////////////////
 
 	sf::RectangleShape bound;
@@ -156,14 +162,6 @@ int main()
 	bgTexture[2].loadFromFile("asset/BGBack.png");
 	bgTexture[3].loadFromFile("asset/BGFront.png");
 
-	sf::RectangleShape bgForeground;
-	//bgForeground.setSize(sf::Vector2f(2000.0f, 800.0f));
-	bgForeground.setSize(sf::Vector2f(2000.0f, 800.0f));
-	//bgForeground.setScale(2, 2);
-	bgForeground.setPosition(sf::Vector2f(0, 0));
-	sf::Texture bgforeText;
-	bgforeText.loadFromFile("asset/tilemap1.png");
-	bgForeground.setTexture(&bgforeText);
 
 	std::vector<Background> backgrounds;
 	backgrounds.push_back(Background(&bgTexture[0], -5.f));
@@ -195,16 +193,70 @@ int main()
 	//initialize platform
 	std::vector<Platform> platforms;
 	//Ground && platform
-	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 25.0f), sf::Vector2f(1000.0f, 400.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 25.0f), sf::Vector2f(800.0f, 525.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 200.0f), sf::Vector2f(100.0f, 625.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(800.0f, 1000.0f), sf::Vector2f(-100.0f, 200.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 150.0f), sf::Vector2f(50.0f, 300.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 50.0f), sf::Vector2f(1500.0f, 575.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(100.0f, 75.0f), sf::Vector2f(1400.0f, 375.0f)));
-	platforms.push_back(Platform(nullptr, sf::Vector2f(10000.0f, 200.0f), sf::Vector2f(500.0f, 775.0f)));
+////	/*platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 25.0f), sf::Vector2f(1000.0f, 400.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 25.0f), sf::Vector2f(800.0f, 525.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 200.0f), sf::Vector2f(100.0f, 625.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(800.0f, 1000.0f), sf::Vector2f(-100.0f, 200.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(200.0f, 150.0f), sf::Vector2f(50.0f, 300.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(400.0f, 50.0f), sf::Vector2f(1500.0f, 575.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(100.0f, 75.0f), sf::Vector2f(1400.0f, 375.0f)));
+////	platforms.push_back(Platform(nullptr, sf::Vector2f(10000.0f, 200.0f), sf::Vector2f(500.0f, 775.0f)));
+////*/
 
+	
 
+	//Background
+//Background
+	sf::Texture backgroundState2Texture;
+	backgroundState2Texture.loadFromFile("asset/map1.png");
+	Platform Background1(&backgroundState2Texture, sf::Vector2f(3840 * 48 / 16, 256 * 48 / 16), sf::Vector2f(3840 * 48 / 32, 256 * 48 / 32));
+	// BitMap Init
+	std::vector<Bitmap> block0;
+	int outdoor[16][240] = {
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,00,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+	};
+// DrawBitMap
+	for (int mapX = 0; mapX < 240; mapX++)
+	{
+		for (int mapY = 0; mapY < 16; mapY++)
+		{
+			if (outdoor[mapY][mapX] == 1)
+			{
+				Bitmap outdoor(nullptr, sf::Vector2f(((mapX) * 48) + 24, ((mapY) * 48) + 24), sf::Vector2f(48.f, 48.f));
+				block0.push_back(outdoor);
+			}
+		}
+	}
 	//hitbox//  sf::Vector2f(44.0f + 28.0f, 58.0f)
 	hitbox
 		hitboxMid(0, 0, sf::Vector2f(22, player.GetSize().y), player.GetPosition());
@@ -260,12 +312,12 @@ int main()
 		////////		player.start = clock();*/
 		////////		if (player.faceRight == true)
 		////////		{
-		////////			bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x + 10/* +10 เพื่อให้ออกทางขวาของตัวผู้เล่น*/, player.GetPosition().y),sf::Vector2f(500,0)));
+		////////			bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x + 10/* +10 ??????????????????????????????*/, player.GetPosition().y),sf::Vector2f(500,0)));
 		////////			bullTime.restart();
 		////////		}
 		////////		else if (player.faceRight == false)
 		////////		{
-		////////			bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x - 10/* +10 เพื่อให้ออกทางขวาของตัวผู้เล่น*/, player.GetPosition().y), sf::Vector2f(-500, 0)));
+		////////			bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x - 10/* +10 ??????????????????????????????*/, player.GetPosition().y), sf::Vector2f(-500, 0)));
 		////////			bullTime.restart();
 		////////		}
 		////////		
@@ -280,28 +332,32 @@ int main()
 		}*/
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		bull = bullTime.getElapsedTime().asMilliseconds();
-		if (bull > 800)
-		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-			{
-				player.velocity.x = 0;
-				player.shootState = 1;
-				player.animation.finishShoot == false;
-				player.animation.shoot = true;
-				player.start = clock();
-				if (player.faceRight == true)
-				{
-					bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x + 10/* +10 เพื่อให้ออกทางขวาของตัวผู้เล่น*/, player.GetPosition().y), sf::Vector2f(500, 0)));
-					bullTime.restart();
-				}
-				else if (player.faceRight == false)
-				{
-					bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x - 10/* +10 เพื่อให้ออกทางขวาของตัวผู้เล่น*/, player.GetPosition().y), sf::Vector2f(-500, 0)));
-					bullTime.restart();
-				}
+		if (ammo > 0) {
+			if (bull > 800)
+					{
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+						{
+							player.velocity.x = 0;
+							player.shootState = 1;
+							player.animation.finishShoot == false;
+							player.animation.shoot = true;
+							player.start = clock();
+							ammo--;
+							if (player.faceRight == true)
+							{
+								bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x + 10/* +10 ??????????????????????????????*/, player.GetPosition().y), sf::Vector2f(500, 0)));
+								bullTime.restart();
+							}
+							else if (player.faceRight == false)
+							{
+								bullet.push_back(Bullet(&bullet_texture, sf::Vector2u(1, 1), 0/*imageCOunt*/, sf::Vector2f(player.GetPosition().x - 10/* +10 ??????????????????????????????*/, player.GetPosition().y), sf::Vector2f(-500, 0)));
+								bullTime.restart();
+							}
 
-			}
+						}
+					}
 		}
+		
 		for (Bullet& bullet : bullet) {
 			//printf("Update!\n");
 			bullet.Update(deltaTime);
@@ -336,15 +392,15 @@ int main()
 
 				}
 			}
-			double dif = (double)(player.end - player.start) / CLOCKS_PER_SEC; // ความห่างของเวลา //0.6  0.4  0.4
+			double dif = (double)(player.end - player.start) / CLOCKS_PER_SEC; // ??????????????? //0.6  0.4  0.4
 
-			if (dif > 0.6f)//พร้อมตี พร้อมกด k อีกรอบ
+			if (dif > 0.6f)//??????? ??????? k ??????
 			{
 				cooldown = 0;
 				player.shootState = 0;
 
 			}
-			else if (dif > 0.4f)//เข้าช่วงคูลดาว
+			else if (dif > 0.4f)//??????????????
 			{
 				player.animation.shoot = false;
 				player.shootState = 2;
@@ -374,10 +430,10 @@ int main()
 		for (Item& chest : chest)
 		{
 			if (chest.GetCollider().CheckCollisionAttack(tempChest)) {
-				
+
 				chest.setDestroy(true);
 				printf(" Hit the chest !!\n");
-			
+				ammo += rand() % 3 + 3;
 				float ranChestX = rand() % 2000 + 1000;
 				float ranChestY = rand() % 300 + 300;
 				player.immortalTime = 10.0f;
@@ -385,27 +441,27 @@ int main()
 				player.immortal = true;
 				spawnItemf = spawnItem.getElapsedTime().asSeconds();
 				player.imCl.restart();
-			
+
 			}
 		}
 		//printf("%f\nd", spawnItemf);
 
 		/*if (spawnItemf > 10.0f)
 		{*/
-			for (int i = 0;i < chest.size();i++)
+		for (int i = 0;i < chest.size();i++)
+		{
+			if (chest[i].isSpawn())
 			{
-				if (chest[i].isSpawn())
-				{
-					printf("New chest spawn at x: %f y : %f\n", ranChestx, ranChestY);
-					//				chest.push_back(Item(&chest_texture, sf::Vector2f(ranChestX, ranChestY), sf::Vector2f(0, 0)));
+				printf("New chest spawn at x: %f y : %f\n", ranChestx, ranChestY);
+				//				chest.push_back(Item(&chest_texture, sf::Vector2f(ranChestX, ranChestY), sf::Vector2f(0, 0)));
 
-					chest.push_back(Item(&chest_texture, sf::Vector2f(rand() % 2000 + 1000, rand() % 300 + 300), sf::Vector2f(0, 0)));
-					spawnItem.restart();
-					spawnItemf = 0.0f;
-					chest[i].setSpawn(false);
-				}
+				chest.push_back(Item(&chest_texture, sf::Vector2f(rand() % 2000 + 1000, rand() % 300 + 300), sf::Vector2f(0, 0)));
+				spawnItem.restart();
+				spawnItemf = 0.0f;
+				chest[i].setSpawn(false);
+			}
 
-		//	}
+			//	}
 		}
 		//printf("player immortal : %s\n", player.immortal ? "true  " : "false");
 
@@ -421,9 +477,10 @@ int main()
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////Hp potion Item///////////////////////////////////////////////////////////
+		sf::Time time = Clockspawn.getElapsedTime();
+		Clockspawn.restart();
 
-		potionT = hpPotionTime.getElapsedTime().asMilliseconds();
-		
+
 		for (Item& hpPotion : hpPotion) {
 			//printf("Update!\n");
 			hpPotion.Update(deltaTime);
@@ -433,46 +490,48 @@ int main()
 		for (Item& hpPotion : hpPotion)
 		{
 			if (hpPotion.GetCollider().CheckCollisionAttack(tempPotion)) {
-				
+
 				hpPotion.setDestroy(true);
 				printf(" Hit the Potion !!\n");
 				hpPotion.setSpawn(true);
-				
+				//potionSpawn = 1;
 				if (player.hpPlayer < 3)
 				{
 					int randompotion;
+					randompotion = rand() % 2 + 1;
 					if (player.hpPlayer == 2)
 					{
 						randompotion = 1;
 					}
-					randompotion = rand() % 2;
 					player.hpPlayer += randompotion;
 				}
-				spawnItemf = spawnItem.getElapsedTime().asSeconds();
+				printf("hp player %d ", player.hpPlayer);
 			}
-				
-			}
-		
-		//printf("%f\nd", spawnItemf);
+		}
+	
+		std::cout << itemCooldown << std::endl;
+		if (itemCooldown > 5)
+		{
 
-		/*if (spawnItemf > 10.0f)
-		{*/
 			for (int i = 0;i < hpPotion.size();i++)
 			{
 				if (hpPotion[i].isSpawn())
 				{
+
 					printf("New hpPotion spawn at \n");
-					//				chest.push_back(Item(&chest_texture, sf::Vector2f(ranChestX, ranChestY), sf::Vector2f(0, 0)));
+					//chest.push_back(Item(&chest_texture, sf::Vector2f(ranChestX, ranChestY), sf::Vector2f(0, 0)));
 
 					hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(rand() % 2000 + 1100, rand() % 300 + 305), sf::Vector2f(0, 0)));
-					spawnItem.restart();
-					spawnItemf = 0.0f;
+					//hpPotionTime.restart();
+					//potionT = 0.0f;
+					//potionSpawn = 2;
 					hpPotion[i].setSpawn(false);
+					itemCooldown = 0;
+
 				}
 			}
-		//}
 
-
+		}
 		//printf("%f\n", chestT);
 		for (int i = 0;i < hpPotion.size();i++)
 		{
@@ -482,31 +541,6 @@ int main()
 			}
 
 		}
-
-
-		////if (player.hpPlayer < 3)
-		////{
-		////	if (hitboxMid.getGlobalbounds().intersects(hpPotion.getGlobalBounds()))
-		////	{
-		////		int randompotion;
-		////		if (player.hpPlayer == 2)
-		////		{
-		////			randompotion = 1;
-		////		}
-		////		randompotion = rand() % 2;
-		////		player.currentHp = player.hpPlayer;
-		////		spawnT = spawnTime.getElapsedTime().asMilliseconds();
-		////		//	std::cout << spawnT << std::endl;
-		////		if (spawnT > 2000.0)
-		////		{
-		////			printf("Potion spwan!!\n");
-		////			hpPotion.setPosition(rand() % 1000, rand() & 650);
-		////			spawnTime.restart();
-
-		////			//break;
-		////		}
-		////	}
-		////}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -533,33 +567,29 @@ int main()
 		staminaBar.setFillColor(sf::Color::Red);
 		staminaBar.setOutlineThickness(5.f);
 		staminaBar.setOutlineColor(sf::Color::Yellow);
-		/*staminaText.setPosition(player.GetPosition().x + 400, player.GetPosition().y - 300);
-		staminaText.setFillColor(sf::Color::Red);
-		staminaText.setFont(font);
-		staminaText.setString(std::to_string(staminaCount));
-		staminaText.setOutlineThickness(5.f);
-		staminaText.setOutlineColor(sf::Color::Yellow);*/
-		//staminaString.setPosition(staminaBar.getPosition().x - 120, staminaBar.getPosition().y - 1);
 		staminaString.setPosition(staminaBar.getPosition().x - 150, staminaBar.getPosition().y - 15);
 		staminaString.setFillColor(sf::Color::Red);
 		staminaString.setFont(font);
 		staminaString.setString("Stamina : ");
 		staminaString.setOutlineThickness(5.f);
 		staminaString.setOutlineColor(sf::Color::Yellow);
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+		////////////////////////////////////////////////Bullet string/////////////////////////////////////////////
+		BulletCount.setPosition(player.GetPosition().x + 450, player.GetPosition().y - 200);
+		BulletCount.setFillColor(sf::Color::Red);
+		BulletCount.setOutlineThickness(5.f);
+		BulletCount.setOutlineColor(sf::Color::Yellow);
+		BulletCount.setFont(font);
+		BulletCount.setString(std::to_string(ammo));
 
 		//////////////////////////////////////////////////////Heart player////////////////////////////////////////////////////// 
 		heartPlayer1.setPosition(player.GetPosition().x - 100, player.GetPosition().y - 300);
 		heartPlayer2.setPosition(player.GetPosition().x - 70, player.GetPosition().y - 300);
 		heartPlayer3.setPosition(player.GetPosition().x - 40, player.GetPosition().y - 300);
 
-		//printf("x: %d  y: %d\n ", ranHpX, ranHpY);
-
-		//hpPotion.setPosition(1200, 600);
-
+		/////////////////////////////////////////////////////ammo player////////////////////////////////////////////////////// 
+		ammo1.setPosition(player.GetPosition().x + 400, player.GetPosition().y - 200);
+	
 
 		/////////////////////////////////////////player && enemy Update && hitboxupdate/////////////////////////////////////////
 		sf::Vector2f direction;
@@ -571,48 +601,13 @@ int main()
 		hitboxRight.Update(+28, 0, player.GetPosition());
 		hitboxEnemy.Update(0, 0, enemy1.GetPosition());
 
-		//printf("Hp enemy ; %d\n", enemies[1].hp);
-
-		//if (enemies.size() > 0) {
-		//	Collider temp = enemies[1].GetColliderHitbox();
-		//	for (Bullet& bullet : bullet)
-		//	{
-		//		if (bullet.GetCollider().CheckCollisionAttack(temp)) {
-		//			
-		//			//printf("Bullet Destroy!!\n");
-		//			bullet.setDestroy(true);
-		//			enemies[1].setHp(bullet.GetDmg()); 
-		//			if (enemies[1].GetHp() < 0)
-		//			{
-		//				enemies[1].setDie(true);
-
-		//			}
-		//		}
-		//	}
-		//	for (int i = 0;i < bullet.size();i++)
-		//	{
-		//		if (bullet[i].isDestroy())
-		//		{
-		//			bullet.erase(bullet.begin() + i);
-		//		}
-		//	}
-		//	
-		//	for (size_t E = 0; E < enemies.size(); E++)
-		//	{
-		//		if (enemies[E].isDie())
-		//		{
-		//			//enemies.erase(enemies.begin() + E);
-		//			enemies.push_back(enemy(&enemyGrey, sf::Vector2u(8, 8), 0.2f, 100.0f, 1300.0f, 620.0f));
-		//		}
-
-		//	}
-		//	/*if (enemies[0].GetHp() <= 0)
-		//	{
-		//		enemies.erase(enemies.begin()+1);
-		//	}*/
-		//}
 
 
+
+
+		
+
+		//COLLISION BULLET WITH ENEMY01//
 		Collider temp = enemy1.GetColliderHitbox();
 		for (Bullet& bullet : bullet)
 		{
@@ -638,8 +633,6 @@ int main()
 			}
 		}
 
-		//for (int j = 0;j < 2;j++) {
-
 		if (enemy1.isDie() == true)
 		{
 
@@ -655,50 +648,81 @@ int main()
 			{
 				printf("Enemy spwan!!\n");
 				enemy1.hp = 5;
-				enemy1.SetPosition(sf::Vector2f(rand() % 1000,  rand() % 620));
+				enemy1.SetPosition(sf::Vector2f(rand() % 1000, rand() % 620));
 				spawnTime.restart();
 				enemy1.setDie(false);
-				//break;
+			
 			}
 		}
-		//}
+	
 
 
 
 		////////////////////////////////////////////////player collider with platform////////////////////////////////////////////////
+		//BitMap Collision
+	/*	Collider playerCollision = player.GetCollider();
+		for (int i = 0; i < block0.size(); i++)
+			block0[i].getCollider().CheckCollision(playerCollision, direction, 1.0f);*/
 
-		for (Platform& platform : platforms)// == for(int i =0 ; i<platforms.size();i++)
-			if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
+		////BitMap Collision WITH PLAYER ////
+		for (Bitmap& block0 : block0)
+			if (block0.getCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
 				player.OnCollision(direction);
 
-		//enemy collider with platform
-		for (Platform& platform : platforms)
-			if (platform.GetCollider().CheckCollision(enemy1.GetCollider(), direction, 1.0f))
+		////BitMap Collision WITH ENEMY ////
+		for (Bitmap& block0 : block0)
+			if (block0.getCollider().CheckCollision(enemy1.GetCollider(), direction, 1.0f))
 				enemy1.OncollisionEnemy(direction);
 
-		for (Platform& platform : platforms)// == for(int i =0 ; i<platforms.size();i++)
+		////BitMap Collision WITH CHEST ////
+		for (Bitmap& block0 : block0)
 		{
 			for (Item& chest : chest)// == for(int i =0 ; i<platforms.size();i++)
 
-				if (platform.GetCollider().CheckCollision(chest.GetCollider(), direction, 1.0f))
+				if (block0.getCollider().CheckCollision(chest.GetCollider(), direction, 1.0f))
 					chest.OnCollision(direction);
 		}
 
-		for (Platform& platform : platforms)// == for(int i =0 ; i<platforms.size();i++)
+		////BitMap Collision WITH HP POTION ////
+		for (Bitmap& block0 : block0)
 		{
 			for (Item& hpPotion : hpPotion)// == for(int i =0 ; i<platforms.size();i++)
 
-				if (platform.GetCollider().CheckCollision(hpPotion.GetCollider(), direction, 1.0f))
+				if (block0.getCollider().CheckCollision(hpPotion.GetCollider(), direction, 1.0f))
 					hpPotion.OnCollision(direction);
 		}
 
+		//for (Platform& platform : platforms)// == for(int i =0 ; i<platforms.size();i++)
+		//	if (platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
+		//		player.OnCollision(direction);
+
+		////enemy collider with platform
+		//for (Platform& platform : platforms)
+		//	if (platform.GetCollider().CheckCollision(enemy1.GetCollider(), direction, 1.0f))
+		//		enemy1.OncollisionEnemy(direction);
+
+		//for (Platform& platform : platforms)// == for(int i =0 ; i<platforms.size();i++)
+		//{
+		//	for (Item& chest : chest)// == for(int i =0 ; i<platforms.size();i++)
+
+		//		if (platform.GetCollider().CheckCollision(chest.GetCollider(), direction, 1.0f))
+		//			chest.OnCollision(direction);
+		//}
+
+		//for (Platform& platform : platforms)// == for(int i =0 ; i<platforms.size();i++)
+		//{
+		//	for (Item& hpPotion : hpPotion)// == for(int i =0 ; i<platforms.size();i++)
+
+		//		if (platform.GetCollider().CheckCollision(hpPotion.GetCollider(), direction, 1.0f))
+		//			hpPotion.OnCollision(direction);
+		//}
+
+
+		//IMMORTAL CLOCK//
 		sf::Clock imCl;
 		float immortalCl;
-
-		//printf("hp player : %d   ", player.hpPlayer);
-		//printf("hurt %s", player.animation.hurt ? "true " : "false");
 		immortalCl = imCl.getElapsedTime().asSeconds();
-
+		//COLLISION ENEMY WITH PLAYER HURT HP--//
 		if (enemy1.GetColliderHitbox().CheckCollision(player.GetColliderHitbox(), direction, 1.0f))//1 can slide ,0 can't do anything
 		{
 			//printf("Collision! \n");
@@ -746,15 +770,10 @@ int main()
 
 		}
 
-		//printf("attack : 1 %s\n",player.animation.attack1 ? "true" : "false");
-		//printf("Attack state : %d\n", player.attackState);
-
 		////////////////////////////////////////////////attack method cooldown ////////////////////////////////////////////////
 
 		if (player.attackState > 0)
 		{
-
-
 			if (player.attackState == 1)
 			{
 				if (hitboxMid.getGlobalbounds().intersects(enemy1.GetGlobalbounds()))
@@ -783,15 +802,15 @@ int main()
 
 				}
 			}
-			double dif = (double)(player.end - player.start) / CLOCKS_PER_SEC; // ความห่างของเวลา //0.6  0.4  0.4
+			double dif = (double)(player.end - player.start) / CLOCKS_PER_SEC; // ??????????????? //0.6  0.4  0.4
 
-			if (dif > 0.6f)//พร้อมตี พร้อมกด k อีกรอบ
+			if (dif > 0.6f)//??????? ??????? k ??????
 			{
 				cooldown = 0;
 				player.attackState = 0;
 
 			}
-			else if (dif > 0.4f)//เข้าช่วงคูลดาว
+			else if (dif > 0.4f)//??????????????
 			{
 				player.animation.attack1 = false;
 				player.attackState = 2;
@@ -818,16 +837,18 @@ int main()
 
 
 
+
 		///////////////////////////////////////////////////////////////////clear//////////////////////////////////////////////////////////////////////
 		window.clear(sf::Color(150, 200, 200));
-
+		for (Background& background : backgrounds)
+			background.Draw(window);
+		Background1.Draw(window);
 		/////////////////////////////////////////bound around player && enemy/////////////////////////////////////////
 		bound.setPosition(player.GetPosition().x, player.GetPosition().y);
 		boundE.setPosition(enemy1.GetPosition().x, enemy1.GetPosition().y);
 
 		/////////////////////////////////////////Draw bg/////////////////////////////////////////
-		for (Background& background : backgrounds)
-			background.Draw(window);
+		
 
 
 		/////////////////////////////////////////set view/////////////////////////////////////////
@@ -845,12 +866,11 @@ int main()
 		if (enemy1.hp > 0) {
 			enemy1.Draw(window);
 		}
-		
+
 		////////////////////////////////////////////////draw platforms////////////////////////////////////////////////
 		for (Platform& platform : platforms)
 			platform.Draw(window);
 
-		window.draw(bgForeground);
 		////////////////////////////////////////////////draw bullet////////////////////////////////////////////////
 		for (Bullet& bullet : bullet) {
 
@@ -872,8 +892,8 @@ int main()
 
 			chest.Draw(window);
 		}
-
 		
+
 
 		if (player.hpPlayer > 2)
 		{
@@ -888,6 +908,10 @@ int main()
 			window.draw(heartPlayer1);
 		}
 
+		
+		
+			window.draw(ammo1);
+		
 		//window.draw(hpPotion);
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		window.draw(scoreText);
@@ -895,11 +919,15 @@ int main()
 		window.draw(staminaString);
 		window.draw(staminaText);
 		window.draw(staminaBar);
+		window.draw(BulletCount);
 
-
+		itemCooldown += time.asSeconds();
 		//display//
 		window.display();
+
+		//Background1.Draw(window);
+
 	}
 	return 0;
-	
+
 }

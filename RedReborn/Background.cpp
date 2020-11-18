@@ -2,10 +2,14 @@
 
 Background::Background(sf::Texture* texture, float speed)
 {
+	
 	this->speed = speed;
-	this->size = sf::Vector2f(1080.0f, 720.0f);
+	this->size = sf::Vector2f(512.0f*4.5, 320.0f*4.5);
+	
 	body[0].setSize(size);
 	body[1].setSize(size);
+	//body[0].setPosition(512.0f * 4.5, 100.0f);
+	body[1].setPosition(512.0f * 4.5, 100.0f);
 	body[0].setTexture(texture);
 	body[1].setTexture(texture);
 	body[0].setOrigin(0, 0);

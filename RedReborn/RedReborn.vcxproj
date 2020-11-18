@@ -31,20 +31,29 @@
     <ClInclude Include="..\..\RedJourney\RedJourney\hitbox.h" />
     <ClInclude Include="..\..\RedJourney\RedJourney\Platform.h" />
     <ClInclude Include="..\..\RedJourney\RedJourney\Player.h" />
+    <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="Flag.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="RestartMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Main.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="animationEnemy.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="Flag.cpp" />
     <ClCompile Include="hitbox.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RestartMenu.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\intro.png" />
