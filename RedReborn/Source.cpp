@@ -13,6 +13,7 @@
 #include "C:\RedReborn\RedReborn\Menu.h"
 #include "C:\RedReborn\RedReborn\Bitmap.h"
 #include "C:\RedReborn\RedReborn\Flag.h"
+#include "C:\RedReborn\RedReborn\RestartMenu.h"
 static const float VIEW_HEIGHT = 720.0f;
 static const float VIEW_WIDTH = 1080.0f;
 void ResizeView(const sf::RenderWindow& window, sf::View& view) {
@@ -237,8 +238,6 @@ int main()
 
 	////////// state obj //////////
 	bool check_state2 = false;
-	
-
 	//////////    Manu State    //////////
 	Menu menu(window.getSize().x, window.getSize().y);
 	bool checkGameOpen = false;
@@ -273,12 +272,10 @@ int main()
 					}
 				}
 				break;
-
 			case sf::Event::Closed:
 				window.close();
 				break;
 			}
-
 		}
 		window.clear();
 		window.draw(background);
@@ -289,11 +286,11 @@ int main()
 			break;
 	}
 	
-	bool checkGameRestart = false;
+	bool checkRestart = false;
 	bool restartGame = false;
-
 	
-	while (checkGameOpen == true)
+	
+	while (1)
 	{
 	jumperState:
 		//status state
@@ -319,9 +316,7 @@ int main()
 			std::vector<Item> chest;
 			sf::Texture chest_texture;
 			if (!chest_texture.loadFromFile("asset/object/ChestRed.png"))
-			{
-
-			}
+			{}
 			sf::Clock chestTime;
 			float chestT = 0.0f; //?????????????? ??????? bullet
 			sf::Clock spawnItem;
@@ -822,6 +817,14 @@ int main()
 						goto jumperState;
 					}
 				}
+
+				//restart//
+				if (player.hpPlayer <= 0)
+				{
+					state = 66;
+					goto jumperState;
+
+				}
 				/////////////////////////////////////////////////score Update////////////////////////////////////////////////
 
 				scoreText.setPosition(player.GetPosition().x - 300, player.GetPosition().y - 300);
@@ -1113,12 +1116,7 @@ int main()
 					}
 
 				}
-				//restart//
-				if (player.hpPlayer < 0)
-				{
-
-
-				}
+			
 				////////////////////////////////////////////////setview (must follow Update)////////////////////////////////////////////////
 				view.setCenter(player.GetPosition());
 
@@ -1425,7 +1423,7 @@ int main()
 
 		//Background
 			sf::Texture backgroundState2Texture;
-			backgroundState2Texture.loadFromFile("asset/ll2.png");
+			backgroundState2Texture.loadFromFile("asset/map1.png");
 			Platform Background1(&backgroundState2Texture, sf::Vector2f(3840 * 48 / 16, 256 * 48 / 16), sf::Vector2f(3840 * 48 / 32, 256 * 48 / 32));
 			// BitMap Init
 			std::vector<Bitmap> block0;
@@ -1454,17 +1452,19 @@ int main()
 
 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
 
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,}, };
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,},
+
+			};
 			// DrawBitMap
-			for (int mapX = 0; mapX < 60; mapX++)
+			for (int mapX = 0; mapX < 240; mapX++)
 			{
-				for (int mapY = 0; mapY < 32; mapY++)
+				for (int mapY = 0; mapY < 16; mapY++)
 				{
 					if (outdoor[mapY][mapX] == 1)
 					{
@@ -2142,35 +2142,76 @@ int main()
 			}//while isOpen
 
 		}
+		//state restart
+		if (state == 66)
+		{
+			//////////    Manu State    //////////
+			//sf::RenderWindow window(sf::VideoMode(1080, 720), "Red Journey");
+			RestartMenu Remenu(window.getSize().x, window.getSize().y);
+			sf::Texture textureRe;
+			if (!textureRe.loadFromFile("asset/RestartDeath.png")) {
+				//handle error
+			}
+			sf::Sprite backgroundRestart;
+			backgroundRestart.setTexture(textureRe);
+			backgroundRestart.setPosition(VIEW_WIDTH / 2, VIEW_HEIGHT / 2);
+			backgroundRestart.scale(0.09, 0.09);
+			view.setCenter(VIEW_WIDTH / 1.5f, VIEW_HEIGHT / 2.f);
+			while (window.isOpen())
+			{
+				sf::Event evnt;
+				while (window.pollEvent(evnt))
+				{
+					switch (evnt.type)
+					{
+					case sf::Event::KeyReleased:
+						switch (evnt.key.code) {
+						case sf::Keyboard::W:
+							Remenu.MoveUp();
+							break;
+						case sf::Keyboard::S:
+							Remenu.MoveDown();
+							break;
+						case sf::Keyboard::Return:
+							switch (Remenu.GetPressedItem()) {
+							case 0:
+								std::cout << "Restart has been preesed" << std::endl;
+								state = 1;
+								checkRestart = true;
+								break;
+							case 1:
+								window.close();
+								break;
+
+							}
+						}
+						break;
+
+					case sf::Event::Closed:
+						window.close();
+						break;
+					}
+
+				}
+				window.clear();
+
+				////////////////////////////////////////////////setview (must follow Update)////////////////////////////////////////////////
+				view.setCenter(player.GetPosition());
+				window.setView(view);
+				window.draw(backgroundRestart);
+				//Background1.Draw(window);
+				Remenu.draw(window);
+				window.display();
+				//Restart 
+				if (checkRestart == true)
+				{
+					checkRestart = false;
+					break;
+				}
+			}
+			
+		}
 	}// while (1)
+
 	return 0;
 }
-
-
-//while (window.isOpen())
-//{
-//
-//	//Close Window//
-//	sf::Event evnt;
-//	while (window.pollEvent(evnt))
-//	{
-//		switch (evnt.type)
-//		{
-//		case sf::Event::Closed:
-//			window.close();
-//			break;
-//		case sf::Event::Resized:
-//			//ResizeView(window, view);
-//			break;
-//		}
-//	}
-//	window.clear();
-//	window.setView(view);
-//
-//	window.draw(background);
-//
-//
-//	window.display();
-//
-//}//while isOpen
-//	}// while (1)

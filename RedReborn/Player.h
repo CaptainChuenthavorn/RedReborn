@@ -17,6 +17,7 @@ public:
 	sf::Vector2f GetPosition() {return body.getPosition();}
 	sf::Vector2f GetSize() { return body.getSize(); }
 	sf::Vector2f GetOrigin() { return body.getOrigin(); }
+	sf::Vector2f SetPosition(sf::Vector2f randPos);
 	Collider GetCollider() { return Collider(body); }
 	Collider GetColliderHitbox() { return Collider(hitbox); }
 	sf::RectangleShape hitbox;

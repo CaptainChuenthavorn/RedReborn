@@ -120,11 +120,7 @@ void Player::Update(float deltaTime)
 		//Formula : square root (2.0f * gravity * jumpHeight)
 	}
 
-	/*if (animation.finishJump == true)
-	{
-		animation.jump = false;
-		animation.finishJump = false;
-	}*/
+
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
 	{
@@ -244,4 +240,10 @@ void Player::OnCollision(sf::Vector2f direction)
 		velocity.y = 0.0f;
 		//canJump = true;
 	}
+}
+
+sf::Vector2f Player::SetPosition(sf::Vector2f randPos)
+{
+	body.setPosition(randPos);
+	return body.getPosition();
 }

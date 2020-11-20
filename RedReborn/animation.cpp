@@ -109,7 +109,7 @@ void animation::Update(int row, float deltaTime, bool faceRight)
 
 			if (currentImage.x >= 8) {
 				currentImage.x = 2;
-				//finishAttack1 = true;
+				finishAttack1 = true;
 			}
 		}
 		uvRect.top = currentImage.y * uvRect.height;
@@ -135,7 +135,7 @@ void animation::Update(int row, float deltaTime, bool faceRight)
 			totalTime -= switchTime;
 			currentImage.x++;
 
-			if (currentImage.x >= 8) {
+			if (currentImage.x >= 5) {
 				currentImage.x = 2;
 				finishShoot = true;
 			}
