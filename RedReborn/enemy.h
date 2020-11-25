@@ -28,7 +28,7 @@ public :
 	int GetHp() { return hp; }
 	int hp ;
 	
-
+	
 public: 
 	sf::Clock cl;
 	float enycl;
@@ -42,11 +42,17 @@ public:
 	sf::Vector2u imageCount;
 	sf::Vector2f velocity;
 	
+	sf::Clock clockdead;
 
-	
 	void setDie(bool isDestroy);
-
 	bool isDie() { return isDieBool; }
 	bool isDieBool;
+
+	//for not spawn enemy again
+	void setDieSpawn(bool isDestroySpawn);
+	bool isDieSpawn() { return isDieSpawnBool; }
+	bool isDieSpawnBool;
+
+
 };
 

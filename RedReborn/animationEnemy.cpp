@@ -1,4 +1,4 @@
-#include "C:\RedReborn\RedReborn\animationEnemy.h"
+#include "animationEnemy.h"
 
 animationEnemy::animationEnemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
 {
@@ -51,6 +51,30 @@ void animationEnemy::Update(int row, float deltaTime, bool faceRight)
 			currentImage.x++;
 			if (currentImage.x >= imageCount.x) {
 				currentImage.x = 0;
+			}
+		}
+
+		uvRect.top = currentImage.y * uvRect.height;
+		if (faceRight) {
+			uvRect.left = currentImage.x * uvRect.width;
+			uvRect.width = abs(uvRect.width);
+		}
+		else {
+			uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
+			uvRect.width = -abs(uvRect.width);
+		}
+	}
+
+	if (dead == true)
+	{
+		currentImage.y = row;
+		totalTime += deltaTime;
+
+		if (totalTime >= switchTime) { // for smooth frame
+			totalTime -= switchTime;
+			currentImage.x++;
+			if (currentImage.x >= 7) {
+				currentImage.x = 7;
 			}
 		}
 

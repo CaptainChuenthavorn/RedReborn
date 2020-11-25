@@ -4,8 +4,8 @@
 Flag::Flag(sf::Texture* texture, sf::Vector2f position, sf::Vector2f velocity)
 {
 	//body.setSize(sf::Vector2f(40.f, 28.f));
-	body.setSize(sf::Vector2f(40.f, 44.f));
-	//body.setScale(1,1);
+	body.setSize(sf::Vector2f(128.f, 236.f));//256  472
+	
 	body.setOrigin(body.getSize() / 2.0f);
 	body.setPosition(position);
 	body.setTexture(texture);

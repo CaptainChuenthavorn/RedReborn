@@ -211,7 +211,7 @@ void Player::Update(float deltaTime)
 
 void Player::Draw(sf::RenderWindow& window)
 {
-	window.draw(hitbox);
+	//window.draw(hitbox);
 	window.draw(body);
 }
 
@@ -231,7 +231,6 @@ void Player::OnCollision(sf::Vector2f direction)
 	}
 	if (direction.y <= 0.0f) {
 		//collision on the bottom
-
 		velocity.y = 0.0f;
 		canJump = true;
 	}

@@ -1,4 +1,4 @@
-#include "C:\RedReborn\RedReborn\animation.h"
+#include "animation.h"
 
 
 animation::animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime) {

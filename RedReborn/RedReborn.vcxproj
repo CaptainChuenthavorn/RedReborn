@@ -32,17 +32,18 @@
     <ClInclude Include="..\..\RedJourney\RedJourney\Platform.h" />
     <ClInclude Include="..\..\RedJourney\RedJourney\Player.h" />
     <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Flag.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="RestartMenu.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Users\captain\source\repos\9781785287343_code\SFMLGameDevelopmentByExample\B04284_05_code\Main.cpp" />
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="animationEnemy.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="enemy.cpp" />

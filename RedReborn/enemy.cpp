@@ -4,9 +4,9 @@ enemy::enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 	:animationEnemy(texture, imageCount, switchTime)
 {
 	this->isDieBool = false;
-
+	this->isDieSpawnBool = false;
 	this->speed = speed;
-	this->hp = 5;
+	this->hp = 3;
 
 	row = 0;
 	faceRight = true;
@@ -15,12 +15,11 @@ enemy::enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 	body.setOrigin(body.getSize() / 2.0f);
 	body.setPosition(PosX, PosY);
 	body.setTexture(texture);
-	sf::IntRect textureEny(0, 0, 64, 64);//Origin
-	sf::IntRect textureEnyNew(0, 0, 40, 30);//new (can't use)
-	body.setTextureRect(textureEny);
+	body.setScale(1.4f, 1.4f);
 
 
 	hitbox.setSize(sf::Vector2f(30.0, 48.0));
+	//hitbox.setSize(sf::Vector2f(42.0, 57.6));
 	hitbox.setOrigin(hitbox.getSize() / 2.0f);
 	hitbox.setPosition(body.getPosition().x, body.getPosition().y);
 	hitbox.setFillColor(sf::Color::Yellow);
@@ -45,17 +44,20 @@ void enemy::Update(float deltaTime)
 	if (enycl <= 3.0f)
 	{
 		velocity.x += speed * 0.5;
+
 	}
 	else if (enycl <= 6.0f && enycl >= 3.0f)
 	{
 		velocity.x = 0;
 
 	}
+
 	else if (enycl <= 9.0f && enycl >= 6.0f)
 	{
 		velocity.x -= speed * 0.5;
 		enycl = 0.0f;
 	}
+
 	else {
 
 		cl.restart();
@@ -81,12 +83,13 @@ void enemy::Update(float deltaTime)
 
 void enemy::Draw(sf::RenderWindow& window)
 {
-	window.draw(hitbox);
+	//window.draw(hitbox);
 	window.draw(body);
 }
 
 void enemy::OncollisionEnemy(sf::Vector2f direction)
 {
+
 	if (direction.x < 0.0f) {
 		//collision on the left
 		velocity.x = -velocity.x;
@@ -129,10 +132,17 @@ void enemy::setHp(int dmg)
 	this->hp -= dmg;
 }
 
+
+
 void enemy::setDie(bool isDie)
 {
 
 	this->isDieBool = isDie;
 
+}
+
+void enemy::setDieSpawn(bool isDieSpawn)
+{
+	this->isDieSpawnBool = isDieSpawn;
 }
 
