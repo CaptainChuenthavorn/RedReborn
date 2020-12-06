@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include <sstream>
 //#include "C:\RedReborn\RedReborn\animation.h"
 //#include "C:\RedReborn\RedReborn\Player.h"
 //#include "C:\RedReborn\RedReborn\Platform.h"
@@ -1238,6 +1239,29 @@ int main()
 		{
 
 			printf("We are in state == 2 \n");
+			/********************************** Clock ********************************/
+			sf::Clock RuntimeClock;
+			sf::Time RunTime;
+			float RuntimeFloat;
+			std::ostringstream showtime;
+			sf::Text lbltTime;
+			lbltTime.setPosition(0.0f, 0.0f);
+			lbltTime.setCharacterSize(60);
+			lbltTime.setFont(font);
+
+
+			sf::Clock timeDeath;
+			float timeDeathFloat;
+			timeDeathFloat = timeDeath.getElapsedTime().asMilliseconds();
+			int DeathMethod = 0;
+		
+
+			/********************************** ClockHurt ********************************/
+			sf::Clock clockHurt;
+		
+			float enemyHurtClock;
+			enemyHurtClock = clockHurt.getElapsedTime().asSeconds();
+
 
 			/********************************** Flag ********************************/
 			std::vector<Flag> flag;
@@ -1585,7 +1609,13 @@ int main()
 
 					}
 				}
+				//////////////////////////////////////////////////Clock Runtime/////////////////////////////////////////
 
+				RunTime = RuntimeClock.getElapsedTime();
+				showtime << RunTime.asSeconds();
+				lbltTime.setString(showtime.str());
+				showtime.str("");
+				lbltTime.setPosition(view.getCenter().x + 200, view.getCenter().y - 210);
 
 				//////////////////////////////////////////////////Item in loop//////////////////////////////////////////
 
@@ -1712,7 +1742,7 @@ int main()
 				//restart//
 				if (player.hpPlayer <= 0)
 				{
-					state = 66;
+					state = 66;//restart
 					goto jumperState;
 
 				}
@@ -1752,7 +1782,7 @@ int main()
 				staminaString.setOutlineColor(sf::Color::Yellow);
 
 				////////////////////////////////////////////////Bullet string/////////////////////////////////////////////
-				printf("hP :  %d\n", player.hpPlayer);
+				//printf("hP :  %d\n", player.hpPlayer);
 				BulletCount.setPosition(view.getCenter().x + 450, view.getCenter().y - 200);
 				BulletCount.setFillColor(sf::Color::Red);
 				BulletCount.setOutlineThickness(5.f);
@@ -1827,6 +1857,7 @@ int main()
 						//printf("Bullet Destroy!!\n");
 						bullet.setDestroy(true);
 						enemy1.setHp(bullet.GetDmg());
+						enemy1.SetPositionBounce(20.0);
 						printf(" Hit Gun enemy hp : %d  \n", enemy1.hp);
 
 					}
@@ -1860,7 +1891,7 @@ int main()
 					}
 				}
 
-				printf(" x : %f y : %f\n", player.GetPosition().x, player.GetPosition().y);
+				//printf(" x : %f y : %f\n", player.GetPosition().x, player.GetPosition().y);
 
 				//enemy set die
 				if (enemy1.GetHp() <= 0)
@@ -1876,19 +1907,23 @@ int main()
 					}
 				}
 				//printf("player x:%f y: %f\n", player.GetPosition().x, player.GetPosition().y);
+			
 				if (enemy1.isDie() == true)
 				{
-					scoreCount += 100;
+
+					//RunTime = RuntimeClock.restart();
+					//RuntimeFloat = RunTime.asSeconds();
+					
 					spawnT = spawnTime.getElapsedTime().asMilliseconds();
-					if (spawnT > 2000.0)
-					{
+					
+						scoreCount += 100;
 						printf("Enemy spwan!!\n");
 						enemy1.hp = 3;
 						enemy1.SetPosition(sf::Vector2f(11400.0f, 90.0f));
 						spawnTime.restart();
 						enemy1.setDieSpawn(true);
 						enemy1.setDie(false);
-					}
+					
 				}
 
 				//Enemy2
@@ -1907,8 +1942,20 @@ int main()
 				if (enemy2.GetHp() <= 0)
 				{
 					enemy2.animationEnemy.dead = true;
+					timeDeath.restart();
 					enemy2.setDie(true);
+					DeathMethod = 1;
 				}
+				if (DeathMethod == 1)
+				{
+					//RuntimeClock.restart();
+					RunTime = RuntimeClock.restart();
+					printf("we are in loop Deathmethod = 1\n");
+					//showtime << RunTime.asSeconds();
+					DeathMethod = 0;
+
+				}
+				//RuntimeFloat = RunTime.asSeconds();
 				//bullet disapear//
 				for (int i = 0;i < bullet.size();i++)
 				{
@@ -1917,22 +1964,25 @@ int main()
 						bullet.erase(bullet.begin() + i);
 					}
 				}
-
+				//printf("%f\n", RuntimeFloat);
 				if (enemy2.isDie() == true)
 				{
 
+						
+						enemy2.animationEnemy.dead = true;
+						enemy2.row = 6;
+
+					
+					
+
 					scoreCount += 100;
 
-					spawnT = spawnTime.getElapsedTime().asMilliseconds();
-					if (spawnT > 2000.0)
-					{
 						printf("Enemy spwan!!\n");
 						enemy2.hp = 3;
 						enemy2.SetPosition(sf::Vector2f(11400.0f, 90.0f));
 						enemy2.setDie(false);
 						enemy2.setDieSpawn(true);
-						spawnTime.restart();
-					}
+					
 				}
 
 				//Enemy3
@@ -1967,16 +2017,13 @@ int main()
 
 					scoreCount += 100;
 
-					spawnT = spawnTime.getElapsedTime().asMilliseconds();
-					if (spawnT > 2000.0)
-					{
 						printf("Enemy spwan!!\n");
 						enemy3.hp = 3;
 						enemy3.SetPosition(sf::Vector2f(11400.0f, 90.0f));
 						enemy3.setDie(false);
 						enemy3.setDieSpawn(true);
-						spawnTime.restart();
-					}
+						
+					
 				}
 				
 				////////////////////////////////////////////////player collider with platform////////////////////////////////////////////////
@@ -2170,11 +2217,11 @@ int main()
 
 					player.animation.attack1 = true;
 					player.start = clock();
-
 				}
 
 				////////////////////////////////////////////////attack method cooldown ////////////////////////////////////////////////
-
+				
+				//printf("%f\n", enemyHurtClock);
 				if (player.attackState > 0)
 				{
 					if (player.attackState == 1)
@@ -2193,6 +2240,14 @@ int main()
 									player.attackState = 2;
 									//std::cout << "Hit" << std::endl;
 									scoreCount += 10;
+									
+									enemyHurtClock = 5.0f;
+									//enemyHurtClock = clockHurt.getElapsedTime().asSeconds();
+
+									if(enemyHurtClock <= 200.0)
+										enemy1.animationEnemy.shieldBlocking == true;
+									
+									enemy1.SetPositionBounce(20.0);
 									enemy1.hp--;
 									printf(" Hit enemy hp :%d    \n", enemy1.hp);
 
@@ -2276,6 +2331,8 @@ int main()
 
 						// std::cout << "Cooldown" << std::endl;
 					}
+
+					
 				}
 				////////////////////////////////////////////////attack method//////////////////////////////////////////////
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && player.attackState == 0)
@@ -2439,9 +2496,9 @@ int main()
 					}
 				}
 				//draw Enemy2
-				if (enemy2.isDieSpawn() == false)
-				{
-					if (enemy2.hp > 0) {
+				if (enemy2.isDieSpawn() == false )
+				{ enemy2.
+					if (enemy2.hp > 0 ) {
 						enemy2.Draw(window);
 						//Draw enemy2 heart
 						if (enemy2.hp > 2)
@@ -2517,6 +2574,7 @@ int main()
 				window.draw(staminaBar);
 				window.draw(BulletCount);
 
+				window.draw(lbltTime);
 
 				//display//
 				window.display();
@@ -2548,7 +2606,7 @@ int main()
 			float ranChestx = ranChestX / 10.f;
 			float ranChesty = ranChestY / 10.f;
 
-			printf("chest spawn at x: %f y : %f\n", ranChestx, ranChestY);
+			//printf("chest spawn at x: %f y : %f\n", ranChestx, ranChestY);
 			chest.push_back(Item(&chest_texture, sf::Vector2f(rand() % 2000 + 1000, rand() % 300 + 300), sf::Vector2f(0, 1)));
 
 			/**********************************Player Heart********************************/
@@ -2678,7 +2736,7 @@ int main()
 			int ranhpPotionX = rand() % 2880;
 			int ranhpPotionY = 0;
 
-			printf("potion spawn at x: %f y : %f\n", ranhpPotionX, ranhpPotionY);
+			//printf("potion spawn at x: %f y : %f\n", ranhpPotionX, ranhpPotionY);
 			//hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(rand() % 2000 + 1050, rand() % 300 + 310), sf::Vector2f(0, 1)));
 			//hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(rand() % 2000 + 1100, rand() % 300 + 305), sf::Vector2f(0, 1)));
 			hpPotion.push_back(Item(&hpPotionTexture, sf::Vector2f(ranhpPotionX, ranhpPotionY), sf::Vector2f(0, 1)));
@@ -3103,7 +3161,7 @@ int main()
 				staminaString.setOutlineColor(sf::Color::Yellow);
 
 				////////////////////////////////////////////////Bullet string/////////////////////////////////////////////
-				printf("hP :  %d\n", player.hpPlayer);
+				//printf("hP :  %d\n", player.hpPlayer);
 				BulletCount.setPosition(view.getCenter().x + 450, view.getCenter().y - 200);
 				BulletCount.setFillColor(sf::Color::Red);
 				BulletCount.setOutlineThickness(5.f);
@@ -4043,7 +4101,7 @@ int main()
 		//draw Enemy2
 		if (enemy2.isDieSpawn() == false)
 		{
-			if (enemy2.hp > 0) {
+			if (enemy2.hp > 0 ) {
 				enemy2.Draw(window);
 				//Draw enemy2 heart
 				if (enemy2.hp > 2)

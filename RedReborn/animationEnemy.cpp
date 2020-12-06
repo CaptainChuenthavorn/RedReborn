@@ -88,4 +88,28 @@ void animationEnemy::Update(int row, float deltaTime, bool faceRight)
 			uvRect.width = -abs(uvRect.width);
 		}
 	}
+
+	if(shieldBlocking== true)
+		{
+			currentImage.y = row;
+			totalTime += deltaTime;
+
+			if (totalTime >= switchTime) { // for smooth frame
+				totalTime -= switchTime;
+				currentImage.x++;
+				if (currentImage.x >= 1) {
+					currentImage.x = 0;
+				}
+			}
+
+			uvRect.top = currentImage.y * uvRect.height;
+			if (faceRight) {
+				uvRect.left = currentImage.x * uvRect.width;
+				uvRect.width = abs(uvRect.width);
+			}
+			else {
+				uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
+				uvRect.width = -abs(uvRect.width);
+			}
+		}
 }
