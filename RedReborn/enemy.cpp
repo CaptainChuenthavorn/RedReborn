@@ -7,7 +7,7 @@ enemy::enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 	this->isDieSpawnBool = false;
 	this->speed = speed;
 	this->hp = 3;
-
+	
 	row = 0;
 	faceRight = true;
 	body.setSize(sf::Vector2f(128.0, 128.0));//Old
@@ -44,7 +44,6 @@ void enemy::Update(float deltaTime)
 	if (enycl <= 3.0f)
 	{
 		velocity.x += speed * 0.5;
-
 	}
 	else if (enycl <= 6.0f && enycl >= 3.0f)
 	{

@@ -28,6 +28,8 @@
 #include "Flag.h"
 #include "RestartMenu.h"
 #include "Boss.h"
+#include "enemyDeath.h"
+#include "animationEnemyDeath.h"
 static const float VIEW_HEIGHT = 720.0f;
 static const float VIEW_WIDTH = 1080.0f;
 void ResizeView(const sf::RenderWindow& window, sf::View& view) {
@@ -1250,12 +1252,12 @@ int main()
 			lbltTime.setFont(font);
 
 
-			sf::Clock timeDeath;
-			float timeDeathFloat;
-			timeDeathFloat = timeDeath.getElapsedTime().asMilliseconds();
+			
 			int DeathMethod = 0;
 		
-
+			int aniDeathEny1 = 0;//0 = not done , 1 = done
+			int aniDeathEny2 = 0;//0 = not done , 1 = done
+			int aniDeathEny3 = 0;//0 = not done , 1 = done
 			/********************************** ClockHurt ********************************/
 			sf::Clock clockHurt;
 		
@@ -1408,7 +1410,11 @@ int main()
 			enemy enemy1(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 100.0f, 1757.0f, 290.0f);
 			enemy enemy2(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 100.0f, 4325.0f, 500.0f);
 			enemy enemy3(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 100.0f, 5129.0f, 100.0f);
-			
+
+			enemyDeath enemyDeath1(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 0.0f,0.0f);
+			enemyDeath enemyDeath2(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 0.0f, 0.0f);
+			enemyDeath enemyDeath3(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 0.0f, 0.0f);
+
 			//Ground Collide will death platform
 			sf::RectangleShape groundDeath(sf::Vector2f(200000.0f, 25.0f)); //size
 			groundDeath.setPosition(sf::Vector2f(-2000.0f, 1000.0f));//position
@@ -1611,11 +1617,18 @@ int main()
 				}
 				//////////////////////////////////////////////////Clock Runtime/////////////////////////////////////////
 
+				//RunTime = RuntimeClock.getElapsedTime();
 				RunTime = RuntimeClock.getElapsedTime();
 				showtime << RunTime.asSeconds();
 				lbltTime.setString(showtime.str());
 				showtime.str("");
 				lbltTime.setPosition(view.getCenter().x + 200, view.getCenter().y - 210);
+
+				
+				printf("   player hp : %d   ", player.hpPlayer);
+				
+
+
 
 				//////////////////////////////////////////////////Item in loop//////////////////////////////////////////
 
@@ -1839,6 +1852,9 @@ int main()
 				enemy1.Update(deltaTime);
 				enemy2.Update(deltaTime);
 				enemy3.Update(deltaTime);
+				enemyDeath2.Update(deltaTime);
+
+
 
 				hitboxMid.Update(0, 0, player.GetPosition());
 				hitboxLeft.Update(-28, 0, player.GetPosition());
@@ -1911,8 +1927,7 @@ int main()
 				if (enemy1.isDie() == true)
 				{
 
-					//RunTime = RuntimeClock.restart();
-					//RuntimeFloat = RunTime.asSeconds();
+					
 					
 					spawnT = spawnTime.getElapsedTime().asMilliseconds();
 					
@@ -1926,65 +1941,7 @@ int main()
 					
 				}
 
-				//Enemy2
-					//COLLISION BULLET WITH ENEMY02//
-				Collider temp2 = enemy2.GetColliderHitbox();
-				for (Bullet& bullet : bullet)
-				{
-					if (bullet.GetCollider().CheckCollisionAttack(temp2)) {
-
-						bullet.setDestroy(true);
-						enemy2.setHp(bullet.GetDmg());
-						printf(" Hit Gun enemy hp : %d  \n", enemy2.hp);
-					}
-				}
-				//enemy set die
-				if (enemy2.GetHp() <= 0)
-				{
-					enemy2.animationEnemy.dead = true;
-					timeDeath.restart();
-					enemy2.setDie(true);
-					DeathMethod = 1;
-				}
-				if (DeathMethod == 1)
-				{
-					//RuntimeClock.restart();
-					RunTime = RuntimeClock.restart();
-					printf("we are in loop Deathmethod = 1\n");
-					//showtime << RunTime.asSeconds();
-					DeathMethod = 0;
-
-				}
-				//RuntimeFloat = RunTime.asSeconds();
-				//bullet disapear//
-				for (int i = 0;i < bullet.size();i++)
-				{
-					if (bullet[i].isDestroy())
-					{
-						bullet.erase(bullet.begin() + i);
-					}
-				}
-				//printf("%f\n", RuntimeFloat);
-				if (enemy2.isDie() == true)
-				{
-
-						
-						enemy2.animationEnemy.dead = true;
-						enemy2.row = 6;
-
-					
-					
-
-					scoreCount += 100;
-
-						printf("Enemy spwan!!\n");
-						enemy2.hp = 3;
-						enemy2.SetPosition(sf::Vector2f(11400.0f, 90.0f));
-						enemy2.setDie(false);
-						enemy2.setDieSpawn(true);
-					
-				}
-
+				
 				//Enemy3
 				//COLLISION BULLET WITH ENEMY02//
 				Collider temp3 = enemy3.GetColliderHitbox();
@@ -2425,6 +2382,79 @@ int main()
 					{
 					}
 				}
+
+				//Enemy2
+					//COLLISION BULLET WITH ENEMY02//
+				Collider temp2 = enemy2.GetColliderHitbox();
+				for (Bullet& bullet : bullet)
+				{
+					if (bullet.GetCollider().CheckCollisionAttack(temp2)) {
+
+						bullet.setDestroy(true);
+						enemy2.setHp(bullet.GetDmg());
+						printf(" Hit Gun enemy hp : %d  \n", enemy2.hp);
+					}
+				}
+				//enemy set die
+
+				if (enemy2.GetHp() <= 0)
+				{
+				
+					DeathMethod = 1;
+					enemy2.setDie(true);
+					
+
+				}
+
+				if (DeathMethod == 1)
+				{
+					//restartClockDeathAni:
+					//RuntimeClock.restart();
+					
+					RunTime = RuntimeClock.restart();
+					printf("we are in loop Deathmethod = 1\n");
+					//showtime << RunTime.asSeconds();
+					DeathMethod = 2;
+
+				}
+				RuntimeFloat = RunTime.asMilliseconds();
+				//bullet disapear//
+				
+
+				if (enemy2.isDie() == true && DeathMethod == 2)
+				{
+					if (RuntimeFloat <= 2000 )
+					{
+						printf("\n  We are in animation dead enemy ");
+						enemy2.animationEnemy.dead = true;
+						enemy2.row = 7;
+					}
+					else if (RuntimeFloat >= 2000 )
+					{
+						printf("Enemy spwan!!\n");
+						enemy2.setDie(false);
+						enemy2.setDieSpawn(true);
+						aniDeathEny2 = 1;
+						scoreCount += 100;
+						enemy2.hp = 3;
+						//enemy2.SetPosition(sf::Vector2f(enemy2.GetPosition()));
+						DeathMethod = 3;
+						enemy2.SetPosition(sf::Vector2f(11400.0f, 90.0f));
+					}
+				}
+				printf("aniDeathEny2   = %d           ", aniDeathEny2);
+				printf("%f\n", RuntimeFloat);
+				for (int i = 0;i < bullet.size();i++)
+				{
+					if (bullet[i].isDestroy())
+					{
+						bullet.erase(bullet.begin() + i);
+					}
+				}
+
+
+
+
 				////////////////////////////////////////////////setview (must follow Update)////////////////////////////////////////////////
 				view.setCenter(player.GetPosition().x, 380);
 				////////////////////////////////////////////////set background slide////////////////////////////////////////////////
@@ -2477,7 +2507,8 @@ int main()
 				//draw Enemy1
 				if (enemy1.isDieSpawn() == false)
 				{
-					if (enemy1.hp > 0) {
+
+					if (enemy1.hp > 0 ) {
 						enemy1.Draw(window);
 						//Draw enemy1 heart
 						if (enemy1.hp > 2)
@@ -2497,8 +2528,9 @@ int main()
 				}
 				//draw Enemy2
 				if (enemy2.isDieSpawn() == false )
-				{ enemy2.
-					if (enemy2.hp > 0 ) {
+				{ 
+					
+					if (enemy2.hp > 0 || aniDeathEny2 < 3) {
 						enemy2.Draw(window);
 						//Draw enemy2 heart
 						if (enemy2.hp > 2)
@@ -2516,6 +2548,10 @@ int main()
 					}
 
 				}
+						//draw enemy2 Death
+						if(enemyDeath2.isDie() == true)
+						enemyDeath2.Draw(window);
+
 				//draw Enemy3
 				if (enemy3.isDieSpawn() == false)
 				{
@@ -2989,7 +3025,7 @@ int main()
 
 
 			float deltaTime = 0.0f;
-			sf::Clock clockW;
+			sf::Clock clockW; // clock deltatime
 
 
 			while (window.isOpen()) {
