@@ -183,6 +183,38 @@ void animation::Update(int row, float deltaTime, bool faceRight)
 		}
 
 	}
+
+
+	else if (drawSword == true)//instance sticckwall
+	{
+	totalTime += deltaTime;
+
+
+	if (totalTime >= switchTime) // for smooth frame
+	{
+		//printf("%d    %d\n", currentImage.x, currentImage.y);
+		totalTime -= switchTime;
+		currentImage.x++;
+
+		if (currentImage.x >= 2) {
+
+			currentImage.x = 1;
+			//finishJump = true;
+		}
+
+	}
+	uvRect.top = currentImage.y * uvRect.height;
+	if (faceRight) {
+		uvRect.left = currentImage.x * uvRect.width;
+		uvRect.width = abs(uvRect.width);
+	}
+	else {
+		uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
+		uvRect.width = -abs(uvRect.width);
+		}
+	}
+
+
 	/*
 	currentImage.y = row;
 	totalTime += deltaTime;

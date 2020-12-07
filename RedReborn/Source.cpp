@@ -1460,7 +1460,7 @@ int main()
 			sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
 
 			sf::Texture playerTexture;
-			playerTexture.loadFromFile("asset/v2.1/adventurerSheet.PNG");
+			playerTexture.loadFromFile("asset/v2.1/adventurerSheet1.PNG");
 			Player player(&playerTexture, sf::Vector2u(8, 12), 0.1f, 100.0f, 100.0f);
 
 
@@ -2129,7 +2129,7 @@ int main()
 									enemy1.SetPositionBounce(20.0);
 									enemy1.hp--;
 									printf(" Hit enemy hp :%d    \n", enemy1.hp);
-
+									enemy1.SetPositionBounce(40.0);
 									if (enemy1.hp <= 0)
 									{
 										//std::cout << "Score " << std::endl;
@@ -2154,7 +2154,7 @@ int main()
 									scoreCount += 10;
 									enemy2.hp--;
 									printf(" Hit enemy hp :%d    \n", enemy2.hp);
-
+									enemy2.SetPositionBounce(40.0);
 									if (enemy2.hp <= 0)
 									{
 										//std::cout << "Score " << std::endl;
@@ -2181,7 +2181,7 @@ int main()
 									scoreCount += 10;
 									enemy3.hp--;
 									printf(" Hit enemy hp :%d    \n", enemy3.hp);
-
+									enemy3.SetPositionBounce(40.0);
 									if (enemy3.hp <= 0)
 									{
 										//std::cout << "Score " << std::endl;
@@ -2305,18 +2305,7 @@ int main()
 					}
 				}
 
-				//Enemy2
-					//COLLISION BULLET WITH ENEMY02//
-				Collider temp2 = enemy2.GetColliderHitbox();
-				for (Bullet& bullet : bullet)
-				{
-					if (bullet.GetCollider().CheckCollisionAttack(temp2)) {
-
-						bullet.setDestroy(true);
-						enemy2.setHp(bullet.GetDmg());
-						printf(" Hit Gun enemy hp : %d  \n", enemy2.hp);
-					}
-				}
+				
 
 				//COLLISION BULLET WITH ENEMY01//
 				Collider temp = enemy1.GetColliderHitbox();
@@ -2327,11 +2316,13 @@ int main()
 						//printf("Bullet Destroy!!\n");
 						bullet.setDestroy(true);
 						enemy1.setHp(bullet.GetDmg());
-						enemy1.SetPositionBounce(20.0);
+						enemy1.SetPositionBounce(40.0);
+						enemy1.bound.setFillColor(sf::Color::Red);
 						printf(" Hit Gun enemy hp : %d  \n", enemy1.hp);
 
 					}
 				}
+				
 				//enemy1 set die
 				if (enemy1.GetHp() <= 0)
 				{
@@ -2382,7 +2373,21 @@ int main()
 
 
 				
+				//Enemy2
+					//COLLISION BULLET WITH ENEMY02//
+				Collider temp2 = enemy2.GetColliderHitbox();
+				for (Bullet& bullet : bullet)
+				{
+					if (bullet.GetCollider().CheckCollisionAttack(temp2)) {
 
+						bullet.setDestroy(true);
+						enemy2.setHp(bullet.GetDmg());
+						enemy2.SetPositionBounce(40.0);
+						enemy2.body.setFillColor(sf::Color::Red);
+						printf(" Hit Gun enemy hp : %d  \n", enemy2.hp);
+					}
+				}
+				
 				//enemy set die
 
 				if (enemy2.GetHp() <= 0)
@@ -2437,6 +2442,7 @@ int main()
 
 						bullet.setDestroy(true);
 						enemy3.setHp(bullet.GetDmg());
+						enemy3.SetPositionBounce(40.0);
 						printf(" Hit Gun enemy hp : %d  \n", enemy3.hp);
 					}
 				}
@@ -2567,6 +2573,10 @@ int main()
 					enemyDeath1.animationEnemyDeath.play = true;
 					enemyDeath1.Draw(window);
 				}
+
+				
+
+
 
 				//draw Enemy2
 				if (enemy2.isDieSpawn() == false )
@@ -2950,7 +2960,7 @@ int main()
 			//Background
 
 			sf::Texture backgroundState2Texture;
-			backgroundState2Texture.loadFromFile("asset/map/map3/map_03.png");
+			backgroundState2Texture.loadFromFile("asset/map/map3/map__03.png");
 			Platform Background3(&backgroundState2Texture, sf::Vector2f(3840 * 48 / 16, 256 * 48 / 16), sf::Vector2f(3840 * 48 / 32, 256 * 48 / 32));
 			//Background Expand
 			sf::Texture backgroundState3ExpandTexture;
@@ -4128,8 +4138,8 @@ int main()
 		///////////////////////////////////////////////////////////////////clear//////////////////////////////////////////////////////////////////////
 		window.clear(sf::Color(150, 200, 200));
 		/////////////////////////////////////////Draw bg/////////////////////////////////////////
-		for (Background& background : backgrounds)
-			background.Draw(window);
+		//for (Background& background : backgrounds)
+		//	background.Draw(window);
 		Background3.Draw(window);
 		Background3ExpandLeft.Draw(window);
 		Background3ExpandRight.Draw(window);
@@ -4187,7 +4197,6 @@ int main()
 				{
 					window.draw(heartEnemy1);
 				}
-
 			}
 		}
 		//draw Enemy2

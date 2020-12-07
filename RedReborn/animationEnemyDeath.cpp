@@ -28,7 +28,7 @@ void animationEnemyDeath::Update(int row, float deltaTime, bool faceRight)
 				currentImage.x = 6;
 			}
 		}
-
+		
 		uvRect.top = currentImage.y * uvRect.height;
 		if (faceRight) {
 			uvRect.left = currentImage.x * uvRect.width;

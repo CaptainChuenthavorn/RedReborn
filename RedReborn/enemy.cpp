@@ -12,12 +12,17 @@ enemy::enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, fl
 	row = 0;
 	faceRight = true;
 	body.setSize(sf::Vector2f(128.0, 128.0));//Old
-
 	body.setOrigin(body.getSize() / 2.0f);
 	body.setPosition(PosX, PosY);
 	body.setTexture(texture);
 	body.setScale(1.4f, 1.4f);
 
+	bound.setSize(sf::Vector2f(128.0, 128.0));//Old
+	bound.setOrigin(body.getSize() / 2.0f);
+	bound.setPosition(body.getPosition());
+	bound.setTexture(texture);
+	bound.setScale(1.4f, 1.4f);
+	
 
 	hitbox.setSize(sf::Vector2f(30.0, 48.0));
 	//hitbox.setSize(sf::Vector2f(42.0, 57.6));
@@ -79,12 +84,17 @@ void enemy::Update(float deltaTime)
 	animationEnemy.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animationEnemy.uvRect);
 	body.move(velocity * deltaTime);//Before : velocity * deltaTime
+	//hurt bound 
+	bound.setTextureRect(animationEnemy.uvRect);
+	bound.setPosition(body.getPosition());//Before : velocity * deltaTime
 }
 
 void enemy::Draw(sf::RenderWindow& window)
 {
 	//window.draw(hitbox);
+	
 	window.draw(body);
+	window.draw(bound);
 }
 
 void enemy::OncollisionEnemy(sf::Vector2f direction)

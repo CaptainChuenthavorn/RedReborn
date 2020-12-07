@@ -51,6 +51,12 @@ void Player::Update(float deltaTime)
 
 		row = 1;
 		velocity.x -= speed;
+		/*if (animation.drawSword == true) {
+			animation.run = false;
+		}
+		else {
+			animation.run = true;
+		}*/
 		animation.run = true;
 		animation.idle = false;
 		animation.jump = false;
@@ -69,7 +75,16 @@ void Player::Update(float deltaTime)
 		animation.attack1 = false;
 
 	}
-
+	printf("row  %d\n", row);
+	if (row == 4)
+	{
+		animation.drawSword = true;//stickWall
+		animation.run = false;
+		animation.idle = false;
+		animation.jump = false;
+		animation.attack1 = false;
+	}
+	
 	//printf("%.2f\n", stamina);
 	if (stamina > 50) {
 
@@ -190,6 +205,9 @@ void Player::Update(float deltaTime)
 	}
 
 	velocity.y += 981.0f * deltaTime;
+	
+
+
 	if (velocity.x == 0.0f)
 	{
 		row = 0; // idle
@@ -223,11 +241,19 @@ void Player::OnCollision(sf::Vector2f direction)
 		//collision on the left
 		velocity.x = 0.0f;
 		canJump = true;
+		row = 4;
 	}
 	else if (direction.x > 0.0f) {
 		//collision on the right
 		velocity.x = 0.0f;
 		canJump = true;
+		row = 4;
+		animation.drawSword = true;//stickWall
+		animation.run = false;
+		animation.idle = false;
+		animation.jump = false;
+		animation.attack1 = false;
+
 	}
 	if (direction.y <= 0.0f) {
 		//collision on the bottom
