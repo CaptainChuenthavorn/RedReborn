@@ -1251,13 +1251,13 @@ int main()
 			lbltTime.setCharacterSize(60);
 			lbltTime.setFont(font);
 
-
+			bool faceRightEnemy1Temp = 1;
+			int faceRightEnemy1Count = 1;//ready , finish
+			bool faceRightEnemy2Temp=1;
+			int faceRightEnemy2Count = 1;//ready , finish
+			bool faceRightEnemy3Temp = 1;
+			int faceRightEnemy3Count = 1;//ready , finish
 			
-			int DeathMethod = 0;
-		
-			int aniDeathEny1 = 0;//0 = not done , 1 = done
-			int aniDeathEny2 = 0;//0 = not done , 1 = done
-			int aniDeathEny3 = 0;//0 = not done , 1 = done
 			/********************************** ClockHurt ********************************/
 			sf::Clock clockHurt;
 		
@@ -1290,7 +1290,7 @@ int main()
 			float ranChesty = ranChestY / 10.f;
 
 			printf("chest spawn at x: %f y : %f\n", ranChestx, ranChestY);
-			chest.push_back(Item(&chest_texture, sf::Vector2f(rand() % 2000 + 1000, rand() % 300 + 300), sf::Vector2f(0, 1)));
+			chest.push_back(Item(&chest_texture, sf::Vector2f(rand() % 2000 + 1000, rand() % 300 ), sf::Vector2f(0, 1)));
 
 			/**********************************Player Heart********************************/
 
@@ -1412,8 +1412,13 @@ int main()
 			enemy enemy3(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 100.0f, 5129.0f, 100.0f);
 
 			enemyDeath enemyDeath1(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 0.0f,0.0f);
-			enemyDeath enemyDeath2(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 0.0f, 0.0f);
+			enemyDeath enemyDeath2(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 40.0f, 300.0f);
 			enemyDeath enemyDeath3(&GreyEnemy, sf::Vector2u(8, 8), 0.2f, 0.0f, 0.0f);
+			sf::Vector2f enemyDeath1Temp;
+			sf::Vector2f enemyDeath2Temp;
+			sf::Vector2f enemyDeath3Temp;
+
+
 
 			//Ground Collide will death platform
 			sf::RectangleShape groundDeath(sf::Vector2f(200000.0f, 25.0f)); //size
@@ -1625,7 +1630,7 @@ int main()
 				lbltTime.setPosition(view.getCenter().x + 200, view.getCenter().y - 210);
 
 				
-				printf("   player hp : %d   ", player.hpPlayer);
+				//printf("   player hp : %d   ", player.hpPlayer);
 				
 
 
@@ -1852,7 +1857,9 @@ int main()
 				enemy1.Update(deltaTime);
 				enemy2.Update(deltaTime);
 				enemy3.Update(deltaTime);
+				enemyDeath1.Update(deltaTime);
 				enemyDeath2.Update(deltaTime);
+				enemyDeath3.Update(deltaTime);
 
 
 
@@ -1864,20 +1871,7 @@ int main()
 				hitboxEnemy.Update(0, 0, enemy1.GetPosition());
 				hitboxEnemy2.Update(0, 0, enemy2.GetPosition());
 				hitboxEnemy3.Update(0, 0, enemy3.GetPosition());
-				//COLLISION BULLET WITH ENEMY01//
-				Collider temp = enemy1.GetColliderHitbox();
-				for (Bullet& bullet : bullet)
-				{
-					if (bullet.GetCollider().CheckCollisionAttack(temp)) {
-
-						//printf("Bullet Destroy!!\n");
-						bullet.setDestroy(true);
-						enemy1.setHp(bullet.GetDmg());
-						enemy1.SetPositionBounce(20.0);
-						printf(" Hit Gun enemy hp : %d  \n", enemy1.hp);
-
-					}
-				}
+				
 				////touch groundDeath////
 				/*Player*/
 				if (player.GetColliderHitbox().CheckCollisionAttack(groundDeath))
@@ -1909,79 +1903,7 @@ int main()
 
 				//printf(" x : %f y : %f\n", player.GetPosition().x, player.GetPosition().y);
 
-				//enemy set die
-				if (enemy1.GetHp() <= 0)
-				{
-					enemy1.setDie(true);
-				}
-				//bullet disapear//
-				for (int i = 0;i < bullet.size();i++)
-				{
-					if (bullet[i].isDestroy())
-					{
-						bullet.erase(bullet.begin() + i);
-					}
-				}
-				//printf("player x:%f y: %f\n", player.GetPosition().x, player.GetPosition().y);
-			
-				if (enemy1.isDie() == true)
-				{
-
-					
-					
-					spawnT = spawnTime.getElapsedTime().asMilliseconds();
-					
-						scoreCount += 100;
-						printf("Enemy spwan!!\n");
-						enemy1.hp = 3;
-						enemy1.SetPosition(sf::Vector2f(11400.0f, 90.0f));
-						spawnTime.restart();
-						enemy1.setDieSpawn(true);
-						enemy1.setDie(false);
-					
-				}
-
 				
-				//Enemy3
-				//COLLISION BULLET WITH ENEMY02//
-				Collider temp3 = enemy3.GetColliderHitbox();
-				for (Bullet& bullet : bullet)
-				{
-					if (bullet.GetCollider().CheckCollisionAttack(temp3)) {
-
-						bullet.setDestroy(true);
-						enemy3.setHp(bullet.GetDmg());
-						printf(" Hit Gun enemy hp : %d  \n", enemy3.hp);
-					}
-				}
-				//enemy set die
-				if (enemy3.GetHp() <= 0)
-				{
-					enemy3.animationEnemy.dead = true;
-					enemy3.setDie(true);
-				}
-				//bullet disapear//
-				for (int i = 0;i < bullet.size();i++)
-				{
-					if (bullet[i].isDestroy())
-					{
-						bullet.erase(bullet.begin() + i);
-					}
-				}
-
-				if (enemy3.isDie() == true)
-				{
-
-					scoreCount += 100;
-
-						printf("Enemy spwan!!\n");
-						enemy3.hp = 3;
-						enemy3.SetPosition(sf::Vector2f(11400.0f, 90.0f));
-						enemy3.setDie(false);
-						enemy3.setDieSpawn(true);
-						
-					
-				}
 				
 				////////////////////////////////////////////////player collider with platform////////////////////////////////////////////////
 
@@ -2395,55 +2317,109 @@ int main()
 						printf(" Hit Gun enemy hp : %d  \n", enemy2.hp);
 					}
 				}
+
+				//COLLISION BULLET WITH ENEMY01//
+				Collider temp = enemy1.GetColliderHitbox();
+				for (Bullet& bullet : bullet)
+				{
+					if (bullet.GetCollider().CheckCollisionAttack(temp)) {
+
+						//printf("Bullet Destroy!!\n");
+						bullet.setDestroy(true);
+						enemy1.setHp(bullet.GetDmg());
+						enemy1.SetPositionBounce(20.0);
+						printf(" Hit Gun enemy hp : %d  \n", enemy1.hp);
+
+					}
+				}
+				//enemy1 set die
+				if (enemy1.GetHp() <= 0)
+				{
+					enemy1.setDie(true);
+					enemyDeath1.setDie(true);
+					faceRightEnemy1Count = 0;
+
+
+				}
+				//bullet disapear//
+				for (int i = 0;i < bullet.size();i++)
+				{
+					if (bullet[i].isDestroy())
+					{
+						bullet.erase(bullet.begin() + i);
+					}
+				}
+				//printf("player x:%f y: %f\n", player.GetPosition().x, player.GetPosition().y);
+
+				if (enemy1.isDie() == true)
+				{
+
+
+					enemyDeath1Temp = enemy1.GetPosition();
+					enemyDeath1.SetPosition(enemyDeath1Temp);
+
+					if (faceRightEnemy1Count == 0)
+					{
+						faceRightEnemy1Temp = enemy1.faceRight;
+						faceRightEnemy1Count = 99;
+					}
+
+					printf("\n  We are in animation dead enemy ");
+					enemy1.animationEnemy.dead = true;
+					enemy1.row = 7;
+
+					printf("Enemy spwan!!\n");
+					enemy1.setDie(false);
+					enemy1.setDieSpawn(true);
+
+					scoreCount += 100;
+					enemy1.hp = 3;
+					//enemy2.SetPosition(sf::Vector2f(enemy2.GetPosition()));
+
+					enemy1.SetPosition(sf::Vector2f(11400.0f, 90.0f));
+
+				}
+
+
+				
+
 				//enemy set die
 
 				if (enemy2.GetHp() <= 0)
 				{
-				
-					DeathMethod = 1;
 					enemy2.setDie(true);
-					
-
+					enemyDeath2.setDie(true);
+					faceRightEnemy2Count = 0;
 				}
 
-				if (DeathMethod == 1)
+				if (enemy2.isDie() == true )
 				{
-					//restartClockDeathAni:
-					//RuntimeClock.restart();
+					enemyDeath2Temp = enemy2.GetPosition();
+					enemyDeath2.SetPosition(enemyDeath2Temp);
 					
-					RunTime = RuntimeClock.restart();
-					printf("we are in loop Deathmethod = 1\n");
-					//showtime << RunTime.asSeconds();
-					DeathMethod = 2;
-
-				}
-				RuntimeFloat = RunTime.asMilliseconds();
-				//bullet disapear//
-				
-
-				if (enemy2.isDie() == true && DeathMethod == 2)
-				{
-					if (RuntimeFloat <= 2000 )
+					if (faceRightEnemy2Count == 0)
 					{
+						faceRightEnemy2Temp = enemy2.faceRight;
+						faceRightEnemy2Count=99;
+					}
+
 						printf("\n  We are in animation dead enemy ");
 						enemy2.animationEnemy.dead = true;
 						enemy2.row = 7;
-					}
-					else if (RuntimeFloat >= 2000 )
-					{
+
 						printf("Enemy spwan!!\n");
 						enemy2.setDie(false);
 						enemy2.setDieSpawn(true);
-						aniDeathEny2 = 1;
+					
 						scoreCount += 100;
 						enemy2.hp = 3;
 						//enemy2.SetPosition(sf::Vector2f(enemy2.GetPosition()));
-						DeathMethod = 3;
+						
 						enemy2.SetPosition(sf::Vector2f(11400.0f, 90.0f));
-					}
+					
 				}
-				printf("aniDeathEny2   = %d           ", aniDeathEny2);
-				printf("%f\n", RuntimeFloat);
+				//printf("aniDeathEny2   = %d           ", aniDeathEny2);
+				//printf("%f\n", RuntimeFloat);
 				for (int i = 0;i < bullet.size();i++)
 				{
 					if (bullet[i].isDestroy())
@@ -2452,7 +2428,63 @@ int main()
 					}
 				}
 
+				//Enemy3
+				//COLLISION BULLET WITH ENEMY02//
+				Collider temp3 = enemy3.GetColliderHitbox();
+				for (Bullet& bullet : bullet)
+				{
+					if (bullet.GetCollider().CheckCollisionAttack(temp3)) {
 
+						bullet.setDestroy(true);
+						enemy3.setHp(bullet.GetDmg());
+						printf(" Hit Gun enemy hp : %d  \n", enemy3.hp);
+					}
+				}
+				//enemy set die
+				if (enemy3.GetHp() <= 0)
+				{
+					enemy3.setDie(true);
+					enemyDeath3.setDie(true);
+					faceRightEnemy3Count = 0;
+				}
+				//bullet disapear//
+				for (int i = 0;i < bullet.size();i++)
+				{
+					if (bullet[i].isDestroy())
+					{
+						bullet.erase(bullet.begin() + i);
+					}
+				}
+
+				if (enemy3.isDie() == true)
+				{
+
+
+					enemyDeath3Temp = enemy3.GetPosition();
+					enemyDeath3.SetPosition(enemyDeath3Temp);
+
+					if (faceRightEnemy1Count == 0)
+					{
+						faceRightEnemy3Temp = enemy1.faceRight;
+						faceRightEnemy3Count = 99;
+					}
+
+					printf("\n  We are in animation dead enemy ");
+					enemy3.animationEnemy.dead = true;
+					enemy3.row = 7;
+
+					printf("Enemy spwan!!\n");
+					enemy3.setDie(false);
+					enemy3.setDieSpawn(true);
+
+					scoreCount += 100;
+					enemy3.hp = 3;
+					//enemy2.SetPosition(sf::Vector2f(enemy2.GetPosition()));
+
+					enemy3.SetPosition(sf::Vector2f(11400.0f, 90.0f));
+
+
+				}
 
 
 				////////////////////////////////////////////////setview (must follow Update)////////////////////////////////////////////////
@@ -2476,7 +2508,7 @@ int main()
 				/*for (Bitmap& blockEnemy : blockEnemy)
 					blockEnemy.draw(window);*/
 
-					/////////////////////////////////////////set view/////////////////////////////////////////
+				/////////////////////////////////////////set view/////////////////////////////////////////
 				window.setView(view);
 				BackgroundState1.Draw(window);
 				Background1ExpandLeft.Draw(window);
@@ -2526,11 +2558,21 @@ int main()
 
 					}
 				}
+				//draw enemy3 Death
+				enemyDeath1.faceRight = faceRightEnemy1Temp;
+
+				if (enemyDeath1.isDie() == true)
+				{
+					//enemyDeath2.faceRight = enemy2.faceRight;
+					enemyDeath1.animationEnemyDeath.play = true;
+					enemyDeath1.Draw(window);
+				}
+
 				//draw Enemy2
 				if (enemy2.isDieSpawn() == false )
 				{ 
 					
-					if (enemy2.hp > 0 || aniDeathEny2 < 3) {
+					if (enemy2.hp > 0) {
 						enemy2.Draw(window);
 						//Draw enemy2 heart
 						if (enemy2.hp > 2)
@@ -2548,9 +2590,15 @@ int main()
 					}
 
 				}
-						//draw enemy2 Death
-						if(enemyDeath2.isDie() == true)
-						enemyDeath2.Draw(window);
+				//draw enemy2 Death
+						enemyDeath2.faceRight = faceRightEnemy2Temp;
+					
+						if (enemyDeath2.isDie() == true)
+						{
+							//enemyDeath2.faceRight = enemy2.faceRight;
+							enemyDeath2.animationEnemyDeath.play = true;
+							enemyDeath2.Draw(window);
+						}
 
 				//draw Enemy3
 				if (enemy3.isDieSpawn() == false)
@@ -2573,7 +2621,15 @@ int main()
 					}
 
 				}
-				
+				//draw enemy3 Death
+				enemyDeath3.faceRight = faceRightEnemy3Temp;
+
+				if (enemyDeath3.isDie() == true)
+				{
+					//enemyDeath2.faceRight = enemy2.faceRight;
+					enemyDeath3.animationEnemyDeath.play = true;
+					enemyDeath3.Draw(window);
+				}
 				
 
 				////////////////////////////////////////////////draw platforms////////////////////////////////////////////////

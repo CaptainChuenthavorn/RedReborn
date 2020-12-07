@@ -23,7 +23,7 @@ enemyDeath::~enemyDeath()
 
 void enemyDeath::Update(float deltaTime)
 {
-	row = 7;
+	row = 6;
 	animationEnemyDeath.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animationEnemyDeath.uvRect);
 }

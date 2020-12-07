@@ -11,6 +11,7 @@ public:
 
 public:
 
+	bool play = false;
 	//enemy movement
 
 	sf::Clock cl;

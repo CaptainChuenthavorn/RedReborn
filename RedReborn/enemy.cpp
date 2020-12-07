@@ -1,5 +1,6 @@
 ﻿#include "enemy.h"
 
+
 enemy::enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float PosX, float PosY)
 	:animationEnemy(texture, imageCount, switchTime)
 {

@@ -16,24 +16,28 @@ animationEnemyDeath::~animationEnemyDeath()
 
 void animationEnemyDeath::Update(int row, float deltaTime, bool faceRight)
 {
-	currentImage.y = row;
-	totalTime += deltaTime;
+	if (play == true)
+	{
+		currentImage.y = row;
+		totalTime += deltaTime;
 
-	if (totalTime >= switchTime) { // for smooth frame
-		totalTime -= switchTime;
-		currentImage.x++;
-		if (currentImage.x >= 7) {
-			currentImage.x = 7;
+		if (totalTime >= switchTime) { // for smooth frame
+			totalTime -= switchTime;
+			currentImage.x++;
+			if (currentImage.x >= 6) {
+				currentImage.x = 6;
+			}
+		}
+
+		uvRect.top = currentImage.y * uvRect.height;
+		if (faceRight) {
+			uvRect.left = currentImage.x * uvRect.width;
+			uvRect.width = abs(uvRect.width);
+		}
+		else {
+			uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
+			uvRect.width = -abs(uvRect.width);
 		}
 	}
-
-	uvRect.top = currentImage.y * uvRect.height;
-	if (faceRight) {
-		uvRect.left = currentImage.x * uvRect.width;
-		uvRect.width = abs(uvRect.width);
-	}
-	else {
-		uvRect.left = (currentImage.x + 1) * abs(uvRect.width);
-		uvRect.width = -abs(uvRect.width);
-	}
+	
 }
